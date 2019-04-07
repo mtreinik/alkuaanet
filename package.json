@@ -1,27 +1,27 @@
 {
   "name": "alkuaanet",
-  "version": "1.0.0",
-  "description": "Alkuaanet gives initial notes of a cappella songs.",
-  "main": "index.js",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "3.9.2",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-scripts": "2.1.8",
+    "typeface-roboto": "0.0.54"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mtreinik/alkuaanet.git"
+  "eslintConfig": {
+    "extends": "react-app"
   },
-  "keywords": [
-    "Node",
-    "React",
-    "TypeScript",
-    "Google",
-    "Sheets",
-    "API"
-  ],
-  "author": "Mikko Reinikainen",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/mtreinik/alkuaanet/issues"
-  },
-  "homepage": "https://github.com/mtreinik/alkuaanet#readme"
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
