@@ -23,8 +23,9 @@ class Logo extends React.Component {
 //    length: 0
   };
   handleClickOpen = () => {
-    this.props.noteAudioPlayer.playNote('A4', true);
-    this.setState({ open: true });
+    this.props.noteAudioPlayer.playNote('A4');
+  //  this.props.noteAudioPlayer.playNote('A4', true);
+  //  this.setState({ open: true });
   };
   handleClose = () => {
     this.setState({ open: false });
@@ -53,11 +54,10 @@ class Logo extends React.Component {
 //    window.addEventListener('devicemotion', this.handleDeviceMotion);
 
     return <div>
-      <Button>
+      <Button onClick={this.handleClickOpen}>
         <img
           src={logo}
-          alt="Äänirauta"
-          onClick={this.handleClickOpen}
+          alt="Äänirauta"          
           />
       </Button>
       <Dialog

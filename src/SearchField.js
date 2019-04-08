@@ -6,12 +6,17 @@ const searchFieldStyle = {
   marginLeft: "1em"
 };
 
-const SearchField = () =>
-  <TextField
+class SearchField extends React.Component {
+  handleChange = (event) => {
+    this.props.handleFilterChange(event.target.value);
+  }
+  render() {
+    return <TextField
     id="search"
     type="search"
     placeholder="Hae kappaleita"
     style={searchFieldStyle}
+    onChange={this.handleChange}
     InputProps={{
       disableUnderline: true,
       startAdornment: (
@@ -19,5 +24,7 @@ const SearchField = () =>
       ),
     }}
     />;
+  }
+}
 
 export default SearchField;

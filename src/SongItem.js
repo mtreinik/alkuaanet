@@ -9,18 +9,17 @@ class SongItem extends React.Component {
     this.props.noteAudioPlayer.playNotes(notes);
   }
   render () {
-    const secondary =
-      (this.props.composer ? `säv. ${this.props.composer}` : '') +
-      (this.props.poet ? `, san. ${this.props.poet}` : '');
-
-    return <ListItem button onClick={this.playNotes(this.props.notes)}>
+    const secondary = this.props.lyrics +
+      (this.props.composer ? ` – <em>säv. ${this.props.composer}</em>` : '') +
+      (this.props.poet ? `, <em>san. ${this.props.poet}</em>` : '');
+    return <ListItem
+        button
+        onClick={this.playNotes(this.props.notes)}>
       <ListItemText
         button="true"
         primary={this.props.title}
         secondary={secondary}/>
-      <ListItemText
-        primary={this.props.notes}
-        />
+      {this.props.notes}
       <ListItemIcon>
         <Icon>play_arrow</Icon>
       </ListItemIcon>

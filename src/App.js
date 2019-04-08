@@ -2,12 +2,16 @@ import React from 'react';
 import './App.css';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Icon from '@material-ui/core/Icon';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Logo from './Logo.js';
+import Help from './Help.js';
 import SearchField from './SearchField.js';
 import SongList from './SongList.js';
 import NoteAudioPlayer from './NoteAudioPlayer.js';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => ({
+});
 
 const theme = createMuiTheme({
   typography: {
@@ -19,49 +23,67 @@ const theme = createMuiTheme({
   },
 });
 
-const songs = [
-  {
-    id: 1,
-    title: "Aikainen aamu",
-    lyrics: "Me astumme yöhön kasteiseen",
-    composer: "Erik Bergman",
-    poet: "Lauri Viljanen",
-    notes: "C3-F2"
-  },
-  {
-    id: 2,
-    title: "Annin laulu",
-    composer: "P. J. Hannikainen",
-    lyrics: "Kulkeissani vainiolla",
-    notes: "C4-Ab3-Eb3-Ab2"
-  },
-  {
-    id: 3,
-    title: "Auringon lapset",
-    composer: "Georg Malmstén",
-    lyrics: "Missä meren aallot",
-    notes: "F#3-E3"
-  }
-];
-
 const noteAudioPlayer = new NoteAudioPlayer();
 
-const App = () =>
-  <div className="App">
-    <MuiThemeProvider theme={theme}>
+function getFilteredSongs(songs, filter) {
+  console.debug('filter=' + filter);
+  const lowerCaseFilter = filter.toLowerCase();
+  return songs.filter(song => {
+    return song.title.toLowerCase().includes(lowerCaseFilter) ||
+      song.lyrics.toLowerCase().includes(lowerCaseFilter);
+  });
+}
 
-      <AppBar position="static">
-        <Toolbar>
-          <Logo noteAudioPlayer={noteAudioPlayer}/>
-          <SearchField />
-          <div style={{flexGrow: 1}} />
-          <Icon>menu</Icon>
-        </Toolbar>
-      </AppBar>
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      songs: [],
+      loaded: false,
+      filter: ''
+    };
+  }
+  handleFilterChange = (filter) => {
+    this.setState({
+      filter: filter
+    });
+  }
 
-     <SongList songs={songs} noteAudioPlayer={noteAudioPlayer} />
+  componentDidMount() {
+    fetch('./songdata.json')
+      .then(response => response.json())
+      .then(data => this.setState({
+          loaded: true,
+          songs: data.map(song => {
+            return {
+              id: song.ID,
+              title: song.nimi,
+              notes: song["opus-aanet"],
+              lyrics: song.alkusanat,
+              composer: song.sav,
+              poet: song.san
+            };
+          })
+        }));
+  }
+  render() {
+    return <div className="App">
+      <MuiThemeProvider theme={theme}>
 
-    </MuiThemeProvider>
-  </div>
+        <AppBar position="sticky">
+          <Toolbar>
+            <Logo noteAudioPlayer={noteAudioPlayer}/>
+            <SearchField handleFilterChange={this.handleFilterChange} />
+            <div style={{flexGrow: 1}} />
+            <Help />
+          </Toolbar>
+        </AppBar>
 
-export default App;
+        <SongList loaded={this.state.loaded} songs={getFilteredSongs(this.state.songs, this.state.filter)} noteAudioPlayer={noteAudioPlayer} />
+
+      </MuiThemeProvider>
+    </div>;
+  }
+}
+
+export default withStyles(styles)(App);

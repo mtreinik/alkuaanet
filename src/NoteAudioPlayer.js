@@ -117,6 +117,9 @@ class NoteAudioPlayer {
   }
 
   playNote(originalNote, loadOnly) {
+    if (loadOnly) {
+    //  return;
+    }
     const note = convertFlatsToSharps(originalNote);
     //console.log('playing note ' + note);
     const sample = this.samples[note];
@@ -142,10 +145,11 @@ class NoteAudioPlayer {
       }
       this.samples[note] = newSample;
       audio.load();
-      audio.play();
       if (loadOnly) {
         audio.pause();
         audio.currentTime = 0;
+      } else {
+        audio.play();
       }
       /*
       audio.play();
