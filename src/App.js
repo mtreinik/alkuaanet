@@ -1,17 +1,15 @@
 import React from 'react';
 import './App.css';
+
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
 import Logo from './Logo.js';
 import Help from './Help.js';
 import SearchField from './SearchField.js';
 import SongList from './SongList.js';
 import NoteAudioPlayer from './NoteAudioPlayer.js';
-import { withStyles } from '@material-ui/core/styles';
-
-const styles = theme => ({
-});
 
 const theme = createMuiTheme({
   typography: {
@@ -26,7 +24,6 @@ const theme = createMuiTheme({
 const noteAudioPlayer = new NoteAudioPlayer();
 
 function getFilteredSongs(songs, filter) {
-  console.debug('filter=' + filter);
   const lowerCaseFilter = filter.toLowerCase();
   return songs.filter(song => {
     return song.title.toLowerCase().includes(lowerCaseFilter) ||
@@ -39,7 +36,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       songs: [],
-      loaded: false,
+      songDataLoaded: false,
       filter: ''
     };
   }
@@ -48,12 +45,11 @@ class App extends React.Component {
       filter: filter
     });
   }
-
   componentDidMount() {
     fetch('./songdata.json')
       .then(response => response.json())
       .then(data => this.setState({
-          loaded: true,
+          songDataLoaded: true,
           songs: data.map(song => {
             return {
               id: song.ID,
@@ -72,18 +68,23 @@ class App extends React.Component {
 
         <AppBar position="sticky">
           <Toolbar>
-            <Logo noteAudioPlayer={noteAudioPlayer}/>
+            <Logo
+              noteAudioPlayer={noteAudioPlayer}
+              />
             <SearchField handleFilterChange={this.handleFilterChange} />
             <div style={{flexGrow: 1}} />
             <Help />
           </Toolbar>
         </AppBar>
 
-        <SongList loaded={this.state.loaded} songs={getFilteredSongs(this.state.songs, this.state.filter)} noteAudioPlayer={noteAudioPlayer} />
+        <SongList
+          loaded={this.state.songDataLoaded}
+          songs={getFilteredSongs(this.state.songs, this.state.filter)}
+          noteAudioPlayer={noteAudioPlayer} />
 
       </MuiThemeProvider>
     </div>;
   }
 }
 
-export default withStyles(styles)(App);
+export default App;
