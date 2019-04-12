@@ -38,7 +38,7 @@ class Logo extends React.Component {
           <Icon>close</Icon>
         </Button>
         <div style={{margin: "1em"}}>
-          <h1>alkuaa.net</h1>
+          <h2>alkuaa.net</h2>
           <p>Alkuäänet mieskuorokappaleisiin.</p>
           <p>Tekijä: Mikko Reinikainen</p>
           <Link color="inherit"

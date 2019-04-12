@@ -95,78 +95,81 @@ function convertFlatsToSharps(originalNote) {
   return newNote;
 }
 
+function playLoadedAudio(audio) {
+  if (!audio.paused) {
+    audio.pause();
+    audio.currentTime = 0;
+  }
+  audio.play();
+}
+
+function playLoadedAudios(audios) {
+  if (audios.length === 0) {
+    return;
+  }
+  const [firstAudio, ...restAudios] = audios;
+  setTimeout(() => {
+    playLoadedAudio(firstAudio);
+    playLoadedAudios(restAudios);
+  }, 400);
+}
+
 class NoteAudioPlayer {
   constructor () {
-    this.samples = [];
+    this.audios = [];
   }
 
-  playNotes(notes, audioFilesAreLoaded) {
-    //console.debug('playing notes ' + notes);
-    if (!audioFilesAreLoaded) {
-      notes.split('-').forEach(function (note) {
-        this.playNote(note, true);
-      }, this);
-    }
-    if (notes.length > 0) {
-      const firstNote = getFirstNote(notes);
-      this.playNote(firstNote, false);
-      setTimeout(() => {
-        this.playNotes(getRestOfNotes(notes), true);
-      }, 500)
-    }
+  playNotes(notes) {
+    const loadedAudiosPromise = Promise.all(this.loadAudios(notes));
+    loadedAudiosPromise
+      .then((audios) => {
+        playLoadedAudios(audios);
+      })
+      .catch(alert);
   }
 
-  playNote(originalNote, loadOnly) {
-    if (loadOnly) {
-    //  return;
-    }
-    const note = convertFlatsToSharps(originalNote);
-    //console.log('playing note ' + note);
-    const sample = this.samples[note];
-    if (sample) {
-      sample.audio.pause();
-      sample.audio.currentTime = 0;
-      if (!loadOnly) {
-        sample.audio.play();
+  playNote(note) {
+    this.playNotes(note);
+  }
+
+  loadAudios(notes) {
+      if (notes.length > 0) {
+        const firstNote = getFirstNote(notes);
+        const loadedAudio = this.loadAudio(firstNote);
+        return [loadedAudio, ...this.loadAudios(getRestOfNotes(notes))];
+      } else {
+        return [];
       }
-    } else {
+  }
+
+  loadAudio(originalNote) {
+    const note = convertFlatsToSharps(originalNote);
+    const audio = this.audios[note];
+    if (!audio) {
       const mappedAudioFile = AUDIO_FILES.find(function (candidate) {
         return candidate.note === note;
       });
       if (!mappedAudioFile) {
-        console.warn('note '+ note + ' not found in audio files');
-        return;
+        console.warn('could not find audio file for note ' + note);
+        return Promise.reject(note);
       }
       const audioFile = mappedAudioFile.audioFile;
-      const audio = new Audio(`${audioFile}`);
-      const newSample = {
-        audio: audio,
-        loaded: false
-      }
-      this.samples[note] = newSample;
+      const audio = new Audio(audioFile);
+      this.audios[note] = audio;
       audio.load();
-      if (loadOnly) {
-        audio.pause();
-        audio.currentTime = 0;
-      } else {
-        audio.play();
-      }
-      /*
-      audio.play();
-      if (loadOnly) {
-        audio.pause();
-        audio.currentTime = 0;
-      }
-      */
-/*
-      audio.addEventListener('loadeddata', () => {
-        audio.play();
-        if (loadOnly) {
-          audio.pause();
-          audio.currentTime = 0;
+      const promise = new Promise((resolve) => {
+
+        const canPlayThrough = (event) => {
+          audio.removeEventListener('canplaythrough', canPlayThrough);
+          resolve(audio);
         }
+
+        audio.addEventListener('canplaythrough', canPlayThrough);
+
       });
-      */
+      return promise;
+    } else {
+      return Promise.resolve(audio);
     }
   }
 }

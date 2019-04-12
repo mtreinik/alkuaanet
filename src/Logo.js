@@ -22,14 +22,17 @@ class Logo extends React.Component {
     open: false,
 //    length: 0
   };
+  /*
   handleClickOpen = () => {
     this.props.noteAudioPlayer.playNote('A4');
   //  this.props.noteAudioPlayer.playNote('A4', true);
   //  this.setState({ open: true });
   };
+  */
   handleClose = () => {
     this.setState({ open: false });
   };
+
   playNote = () => {
     this.props.noteAudioPlayer.playNote('A4');
 //    this.setState({length: this.state.length + 1});
@@ -54,10 +57,10 @@ class Logo extends React.Component {
 //    window.addEventListener('devicemotion', this.handleDeviceMotion);
 
     return <div>
-      <Button onClick={this.handleClickOpen}>
+      <Button onClick={this.playNote}>
         <img
           src={logo}
-          alt="Äänirauta"          
+          alt="Äänirauta"
           />
       </Button>
       <Dialog
