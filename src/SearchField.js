@@ -3,7 +3,8 @@ import Icon from '@material-ui/core/Icon';
 import TextField from '@material-ui/core/TextField';
 
 const searchFieldStyle = {
-  marginLeft: "1em"
+  marginTop: '0.5em',
+  marginLeft: '1em'
 };
 
 class SearchField extends React.Component {
@@ -17,6 +18,7 @@ class SearchField extends React.Component {
     placeholder="Hae kappaleita"
     style={searchFieldStyle}
     onChange={this.handleChange}
+    value={this.props.value}
     InputProps={{
       disableUnderline: true,
       startAdornment: (

@@ -1,5 +1,6 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
+import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import Slide from '@material-ui/core/Slide';
 import Icon from '@material-ui/core/Icon';
@@ -23,9 +24,9 @@ class Logo extends React.Component {
   render () {
 
     return <div>
-      <Button onClick={this.handleClickOpen}>
+      <IconButton onClick={this.handleClickOpen}>
         <Icon>help</Icon>
-      </Button>
+      </IconButton>
       <Dialog
         open={this.state.open}
         onClose={this.handleClose}

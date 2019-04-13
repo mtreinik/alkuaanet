@@ -48,13 +48,12 @@ class SongItem extends React.Component {
     });
   }
   addToPlaylist = () => {
-    console.log('adding ' + this.props.id);
     this.props.handleAddToPlaylist(this.props.id);
   }
   removeFromPlaylist = () =>{
-    console.log('removing ' + this.props.id);
-    this.props.handleRemoveFromPlaylist(this.props.id);
+    this.props.handleRemoveFromPlaylist(this.props.id, this.props.index);
   }
+
   render () {
     const { classes } = this.props;
     const secondary = this.props.lyrics +
