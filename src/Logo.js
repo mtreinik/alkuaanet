@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import logo from './img/aanirauta-32.png';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -74,13 +74,13 @@ class Logo extends React.Component {
 //    window.addEventListener('devicemotion', this.handleDeviceMotion);
     const { classes } = this.props;
     return <div>
-      <Button onClick={this.playNote}>
+      <IconButton onClick={this.playNote}>
         <img
           src={logo}
           alt="Äänirauta"
           className={ this.state.playing ? classes.playing : classes.stopped }
           />
-      </Button>
+      </IconButton>
 
     </div>
   }

@@ -10,9 +10,10 @@ const SongList = props =>
       )
     }
     <List>
-      {props.songs.map(song => (
+      {props.songs.map((song, index) => (
         <SongItem
-          key={song.id}
+          key={song.id + '-' + index}
+          index={index}
           noteAudioPlayer={props.noteAudioPlayer}
           handleAddToPlaylist={props.handleAddToPlaylist}
           handleRemoveFromPlaylist={props.handleRemoveFromPlaylist}
