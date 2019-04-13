@@ -74,6 +74,9 @@ const AUDIO_FILES = [
   { note: "G4", audioFile: audioFileG4 },
 ];
 
+const DURATION=1100
+const DELAY=400
+
 function getFirstNote(notes) {
   return notes.replace(/-.*/, '');
 }
@@ -111,7 +114,7 @@ function playLoadedAudios(audios) {
   setTimeout(() => {
     playLoadedAudio(firstAudio);
     playLoadedAudios(restAudios);
-  }, 400);
+  }, DELAY);
 }
 
 class NoteAudioPlayer {
@@ -119,17 +122,21 @@ class NoteAudioPlayer {
     this.audios = [];
   }
 
-  playNotes(notes) {
+  playNotes(notes, handleStartPlayback, handleEndPlayback) {
     const loadedAudiosPromise = Promise.all(this.loadAudios(notes));
     loadedAudiosPromise
       .then((audios) => {
+        if (handleStartPlayback && handleEndPlayback) {
+          handleStartPlayback();
+          setTimeout(
+            handleEndPlayback,
+            DURATION + (audios.length * DELAY));
+        } else {
+          console.log('no handler for starting and ending playback');
+        }
         playLoadedAudios(audios);
       })
       .catch(alert);
-  }
-
-  playNote(note) {
-    this.playNotes(note);
   }
 
   loadAudios(notes) {
@@ -155,7 +162,8 @@ class NoteAudioPlayer {
       }
       const audioFile = mappedAudioFile.audioFile;
       const audio = new Audio(audioFile);
-      this.audios[note] = audio;
+      // disabled recycling of audio media elements
+      //this.audios[note] = audio;
       audio.load();
       const promise = new Promise((resolve) => {
 
