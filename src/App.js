@@ -32,6 +32,7 @@ function getFilteredSongs(songs, filter) {
 }
 
 class App extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -40,11 +41,13 @@ class App extends React.Component {
       filter: ''
     };
   }
+
   handleFilterChange = (filter) => {
     this.setState({
       filter: filter
     });
   }
+
   componentDidMount() {
     fetch('./songdata.json')
       .then(response => response.json())
@@ -62,6 +65,7 @@ class App extends React.Component {
           })
         }));
   }
+
   render() {
     return <div className="App">
       <MuiThemeProvider theme={theme}>
