@@ -43,7 +43,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/songdata.json')
+    const jsonUrl = window.location.origin + '/songdata.json';
+    console.log('fetching from', jsonUrl);
+    fetch(jsonUrl)
       .then(response => response.json())
       .then(data => this.setState({
           songDataLoaded: true,
@@ -75,7 +77,7 @@ class App extends React.Component {
                 noteAudioPlayer={noteAudioPlayer}
                 songs={this.state.songs}
                 />
-            }/>          
+            }/>
           <Route
             path='/lista/:playlist?'
             render={props =>
