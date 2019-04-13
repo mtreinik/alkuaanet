@@ -98,8 +98,7 @@ class MyAppBar extends React.Component {
                         key="close"
                         aria-label="Close"
                         color="inherit"
-                        onClick={this.closeSnackbar}
-                      >
+                        onClick={this.closeSnackbar}>
                         <Icon>close</Icon>
                       </IconButton>,
                     ]}/>

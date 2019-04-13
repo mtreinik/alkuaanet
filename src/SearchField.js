@@ -15,7 +15,7 @@ class SearchField extends React.Component {
     return <TextField
     id="search"
     type="search"
-    placeholder="Hae kappaleita"
+    placeholder="Hae lauluja"
     style={searchFieldStyle}
     onChange={this.handleChange}
     value={this.props.value}
