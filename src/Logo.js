@@ -74,8 +74,7 @@ class Logo extends React.Component {
 //    window.addEventListener('devicemotion', this.handleDeviceMotion);
     const { classes } = this.props;
     return <div>
-      <Button onClick={this.playNote}
-      >
+      <Button onClick={this.playNote}>
         <img
           src={logo}
           alt="Äänirauta"

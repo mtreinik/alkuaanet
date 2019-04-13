@@ -14,6 +14,8 @@ const SongList = props =>
         <SongItem
           key={song.id}
           noteAudioPlayer={props.noteAudioPlayer}
+          handleAddToPlaylist={props.handleAddToPlaylist}
+          handleRemoveFromPlaylist={props.handleRemoveFromPlaylist}
           {...song}
           />
       ))}
