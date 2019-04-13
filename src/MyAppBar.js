@@ -78,7 +78,7 @@ class MyAppBar extends React.Component {
                       onCopy={this.openSnackbar}>
                     <Button component={Link} to={this.props.playlistPath}>
                       <Icon className={classes.link}>link</Icon>
-                      {this.props.playlist.length} laulun soittolista
+                      {this.props.playlist.length} laulua
                     </Button>
                   </CopyToClipboard>
                   <Snackbar
