@@ -9,6 +9,7 @@ import Logo from './Logo.js';
 import Help from './Help.js';
 import SearchField from './SearchField.js';
 import SongList from './SongList.js';
+import Playlist from './Playlist.js';
 import NoteAudioPlayer from './NoteAudioPlayer.js';
 
 const theme = createMuiTheme({
@@ -31,6 +32,16 @@ function getFilteredSongs(songs, filter) {
   });
 }
 
+function getPlaylistSongs(songs, playlist) {
+  const playlistSongs = playlist.map((songId) => {
+    const songToAdd = songs.find((song) => {
+      return song.id === songId;
+    });
+    return songToAdd;
+  });
+  return playlistSongs;
+}
+
 class App extends React.Component {
 
   constructor(props) {
@@ -38,13 +49,28 @@ class App extends React.Component {
     this.state = {
       songs: [],
       songDataLoaded: false,
-      filter: ''
+      filter: '',
+      playlist: []
     };
   }
 
   handleFilterChange = (filter) => {
     this.setState({
       filter: filter
+    });
+  }
+
+  handleAddToPlaylist = (songId) => {
+    this.setState({
+      playlist: [...this.state.playlist, songId]
+    });
+  }
+
+  handleRemoveFromPlaylist = (songId) => {
+    this.setState({
+      playlist: this.state.playlist.filter((id) => {
+        return id !== songId;
+      })
     });
   }
 
@@ -77,6 +103,12 @@ class App extends React.Component {
               />
             <SearchField handleFilterChange={this.handleFilterChange} />
             <div style={{flexGrow: 1}} />
+            <Playlist
+              songDataLoaded={this.state.songDataLoaded}
+              playlistSongs={getPlaylistSongs(this.state.songs, this.state.playlist)}
+              noteAudioPlayer={noteAudioPlayer}
+              handleRemoveFromPlaylist={this.handleRemoveFromPlaylist}
+              />
             <Help />
           </Toolbar>
         </AppBar>
@@ -84,6 +116,7 @@ class App extends React.Component {
         <SongList
           loaded={this.state.songDataLoaded}
           songs={getFilteredSongs(this.state.songs, this.state.filter)}
+          handleAddToPlaylist={this.handleAddToPlaylist}
           noteAudioPlayer={noteAudioPlayer} />
 
       </MuiThemeProvider>
