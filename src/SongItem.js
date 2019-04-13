@@ -42,8 +42,8 @@ class SongItem extends React.Component {
   render () {
     const { classes } = this.props;
     const secondary = this.props.lyrics +
-      (this.props.composer ? ` – <em>säv. ${this.props.composer}</em>` : '') +
-      (this.props.poet ? `, <em>san. ${this.props.poet}</em>` : '');
+      (this.props.composer ? ` – säv. ${this.props.composer}` : '') +
+      (this.props.poet ? `, san. ${this.props.poet}` : '');
     return <ListItem
         button
         onClick={this.playNotes(this.props.notes)}>
