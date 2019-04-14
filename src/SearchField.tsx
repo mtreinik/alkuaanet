@@ -1,14 +1,18 @@
 import React from 'react';
 import Icon from '@material-ui/core/Icon';
 import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@material-ui/core/styles';
+import { WithStyles, createStyles } from '@material-ui/core';
 
-const searchFieldStyle = {
-  marginTop: '0.5em',
-  marginLeft: '1em',
-  width: '8em'
-};
+const styles = createStyles({
+  textfield: {
+    marginTop: '0.5em',
+    marginLeft: '1em',
+    width: '8em'
+  }
+});
 
-type Props = {
+interface Props extends WithStyles<typeof styles> {
   handleFilterChange: (value: string) => void,
   value: string
 }
@@ -20,11 +24,12 @@ class SearchField extends React.Component<Props> {
   }
 
   render() {
+    const { classes } = this.props;
     return <TextField
     id="search"
     type="search"
     placeholder="Hae lauluja"
-    style={searchFieldStyle}
+    className={classes.textfield}
     onChange={this.handleChange}
     value={this.props.value}
     InputProps={{
@@ -37,4 +42,4 @@ class SearchField extends React.Component<Props> {
   }
 }
 
-export default SearchField;
+export default withStyles(styles)(SearchField);
