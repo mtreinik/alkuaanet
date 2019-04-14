@@ -22,40 +22,12 @@ class Logo extends React.Component {
     this.state = {
       open: false,
       playing: false
-//    length: 0
     };
   }
-  /*
-  handleClickOpen = () => {
-    this.props.noteAudioPlayer.playNote('A4');
-  //  this.props.noteAudioPlayer.playNote('A4', true);
-  //  this.setState({ open: true });
-  };
-  */
-  handleClose = () => {
-    this.setState({ open: false });
-  };
 
   playNote = () => {
     this.props.noteAudioPlayer.playNotes('A4', this.startPlayback, this.endPlayback);
-//    this.setState({length: this.state.length + 1});
   }
-/*
-  handleDeviceMotion = event => {
-    const a = event.acceleration;
-    let length = a.x * a.x + a.y * a.y + a.z * a.z;
-    this.setState({length: length + this.state.length})
-    if (length > 100.0) {
-      this.playNote();
-    }
-  }
-  componentDidMount() {
-    window.addEventListener('devicemotion', this.handleDeviceMotion, true);
-  }
-  componentWillUnmount() {
-    window.removeEventListener('devicemotion', this.handleDeviceMotion, true);
-  }
-*/
 
   startPlayback = () => {
     console.log('playing');
@@ -71,7 +43,6 @@ class Logo extends React.Component {
   }
 
   render () {
-//    window.addEventListener('devicemotion', this.handleDeviceMotion);
     const { classes } = this.props;
     return <div>
       <IconButton onClick={this.playNote}>
