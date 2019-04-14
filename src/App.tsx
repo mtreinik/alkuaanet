@@ -37,7 +37,6 @@ interface SongJson {
   nimi: string,
   "opus-aanet": string,
   alkusanat: string,
-  alkuaanet: string,
   sav: string,
   san: string
 }
