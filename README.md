@@ -23,6 +23,8 @@ The server should have a data file `/songdata.json` with the following format:
   }, ...
 ```
 
+See `scripts` for an example python script that fetches song data from a Google Sheet.
+
 ## Dependencies
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
