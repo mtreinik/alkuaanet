@@ -1,9 +1,11 @@
 import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import logo from './img/aanirauta-32.png';
+import NoteAudioPlayer from './NoteAudioPlayer.js';
 import { withStyles } from '@material-ui/core/styles';
+import { WithStyles, createStyles } from '@material-ui/core';
 
-const styles = {
+const styles = createStyles({
   playing: {
     width: 40,
     height: 'auto',
@@ -14,48 +16,29 @@ const styles = {
     height: 'auto',
     transition: 'width 0.5s'
   }
-};
+});
 
-class Logo extends React.Component {
-  constructor(props) {
+interface Props extends WithStyles<typeof styles> {
+  noteAudioPlayer: NoteAudioPlayer
+}
+
+interface State {
+  open: boolean,
+  playing: boolean
+}
+
+class Logo extends React.Component<Props, State> {
+  constructor(props:Props) {
     super(props);
     this.state = {
       open: false,
       playing: false
-//    length: 0
     };
   }
-  /*
-  handleClickOpen = () => {
-    this.props.noteAudioPlayer.playNote('A4');
-  //  this.props.noteAudioPlayer.playNote('A4', true);
-  //  this.setState({ open: true });
-  };
-  */
-  handleClose = () => {
-    this.setState({ open: false });
-  };
 
   playNote = () => {
     this.props.noteAudioPlayer.playNotes('A4', this.startPlayback, this.endPlayback);
-//    this.setState({length: this.state.length + 1});
   }
-/*
-  handleDeviceMotion = event => {
-    const a = event.acceleration;
-    let length = a.x * a.x + a.y * a.y + a.z * a.z;
-    this.setState({length: length + this.state.length})
-    if (length > 100.0) {
-      this.playNote();
-    }
-  }
-  componentDidMount() {
-    window.addEventListener('devicemotion', this.handleDeviceMotion, true);
-  }
-  componentWillUnmount() {
-    window.removeEventListener('devicemotion', this.handleDeviceMotion, true);
-  }
-*/
 
   startPlayback = () => {
     console.log('playing');
@@ -71,7 +54,6 @@ class Logo extends React.Component {
   }
 
   render () {
-//    window.addEventListener('devicemotion', this.handleDeviceMotion);
     const { classes } = this.props;
     return <div>
       <IconButton onClick={this.playNote}>

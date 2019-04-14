@@ -8,10 +8,17 @@ const searchFieldStyle = {
   width: '8em'
 };
 
-class SearchField extends React.Component {
-  handleChange = (event) => {
+type Props = {
+  handleFilterChange: (value: string) => void,
+  value: string
+}
+
+class SearchField extends React.Component<Props> {
+
+  handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
     this.props.handleFilterChange(event.target.value);
   }
+
   render() {
     return <TextField
     id="search"

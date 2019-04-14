@@ -118,9 +118,10 @@ function playLoadedAudios(audios) {
 }
 
 class NoteAudioPlayer {
-  constructor () {
-    this.audios = [];
-  }
+//  audios;
+//  constructor () {
+//    this.audios = [];
+//  }
 
   playNotes(notes, handleStartPlayback, handleEndPlayback) {
     const loadedAudiosPromise = Promise.all(this.loadAudios(notes));
@@ -151,8 +152,8 @@ class NoteAudioPlayer {
 
   loadAudio(originalNote) {
     const note = convertFlatsToSharps(originalNote);
-    const audio = this.audios[note];
-    if (!audio) {
+    // const audio = this.audios[note];
+    // if (!audio) {
       const mappedAudioFile = AUDIO_FILES.find(function (candidate) {
         return candidate.note === note;
       });
@@ -176,9 +177,9 @@ class NoteAudioPlayer {
 
       });
       return promise;
-    } else {
-      return Promise.resolve(audio);
-    }
+    // } else {
+    //   return Promise.resolve(audio);
+    // }
   }
 }
 export default NoteAudioPlayer;

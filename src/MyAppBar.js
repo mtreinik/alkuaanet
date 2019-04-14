@@ -5,15 +5,15 @@ import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import SearchField from './SearchField.js';
+import SearchField from './SearchField.tsx';
 import Snackbar from '@material-ui/core/Snackbar';
 import { withStyles } from '@material-ui/core/styles';
 
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import { Link } from 'react-router-dom';
 
-import Logo from './Logo.js';
-import Help from './Help.js';
+import Logo from './Logo';
+import Help from './Help';
 
 const styles = {
   link: {
