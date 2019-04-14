@@ -28,6 +28,7 @@ interface State {
 }
 
 class Logo extends React.Component<Props, State> {
+
   constructor(props:Props) {
     super(props);
     this.state = {
@@ -37,17 +38,17 @@ class Logo extends React.Component<Props, State> {
   }
 
   playNote = () => {
-    this.props.noteAudioPlayer.playNotes('A4', this.startPlayback, this.endPlayback);
+    this.props.noteAudioPlayer.playNotes(
+      'A4', this.startPlayback, this.endPlayback);
   }
 
   startPlayback = () => {
-    console.log('playing');
     this.setState({
       playing: true
     })
   }
+
   endPlayback = () => {
-    console.log('stopping');
     this.setState({
       playing: false
     })
