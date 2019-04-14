@@ -29,6 +29,7 @@ class Logo extends React.Component<Props, State> {
   handleClickOpen = () => {
     this.setState({ open: true });
   };
+  
   handleClose = () => {
     this.setState({ open: false });
   };

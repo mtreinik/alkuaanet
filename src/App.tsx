@@ -2,13 +2,12 @@ import React from 'react';
 import './App.css';
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 
 import NoteAudioPlayer from './NoteAudioPlayer';
 import SongSearchPage from './SongSearchPage';
 import { Song } from './SongItem';
-
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { RouteComponentProps } from "react-router-dom";
 
 const theme = createMuiTheme({
   typography: {
@@ -32,7 +31,6 @@ function getPlayListFromUrlParam(param:string) {
   });
   return parsedInts;
 }
-
 
 interface SongJson {
   ID: number,
@@ -90,22 +88,22 @@ class App extends React.Component<RouteComponentProps, State> {
             exact path='/'
             render={() =>
               <SongSearchPage
-                showPlaylist={false}
                 songDataLoaded={this.state.songDataLoaded}
-                playlist={this.state.playlist}
                 noteAudioPlayer={noteAudioPlayer}
                 songs={this.state.songs}
+                playlist={this.state.playlist}
+                showPlaylist={false}
                 />
             }/>
           <Route
             path='/lista/:playlist?'
             render={props =>
               <SongSearchPage
-                showPlaylist={true}
                 songDataLoaded={this.state.songDataLoaded}
-                playlist={getPlayListFromUrlParam(props.match.params.playlist)}
                 noteAudioPlayer={noteAudioPlayer}
                 songs={this.state.songs}
+                playlist={getPlayListFromUrlParam(props.match.params.playlist)}
+                showPlaylist={true}
                 />
             }/>
         </Switch>
