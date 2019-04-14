@@ -1,9 +1,11 @@
 import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import logo from './img/aanirauta-32.png';
+import NoteAudioPlayer from './NoteAudioPlayer.js';
 import { withStyles } from '@material-ui/core/styles';
+import { WithStyles, createStyles } from '@material-ui/core';
 
-const styles = {
+const styles = createStyles({
   playing: {
     width: 40,
     height: 'auto',
@@ -14,10 +16,19 @@ const styles = {
     height: 'auto',
     transition: 'width 0.5s'
   }
-};
+});
 
-class Logo extends React.Component {
-  constructor(props) {
+interface Props extends WithStyles<typeof styles> {
+  noteAudioPlayer: NoteAudioPlayer
+}
+
+interface State {
+  open: boolean,
+  playing: boolean
+}
+
+class Logo extends React.Component<Props, State> {
+  constructor(props:Props) {
     super(props);
     this.state = {
       open: false,

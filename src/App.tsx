@@ -3,10 +3,12 @@ import './App.css';
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
-import NoteAudioPlayer from './NoteAudioPlayer.js';
-import SongSearchPage from './SongSearchPage.js';
+import NoteAudioPlayer from './NoteAudioPlayer';
+import SongSearchPage from './SongSearchPage';
+import { Song } from './SongItem';
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 
 const theme = createMuiTheme({
   typography: {
@@ -20,7 +22,7 @@ const theme = createMuiTheme({
 
 const noteAudioPlayer = new NoteAudioPlayer();
 
-function getPlayListFromUrlParam(param) {
+function getPlayListFromUrlParam(param:string) {
   if (!param) {
     return [];
   }
@@ -31,9 +33,26 @@ function getPlayListFromUrlParam(param) {
   return parsedInts;
 }
 
-class App extends React.Component {
 
-  constructor(props) {
+interface SongJson {
+  ID: number,
+  nimi: string,
+  "opus-aanet": string,
+  alkusanat: string,
+  alkuaanet: string,
+  sav: string,
+  san: string
+}
+
+interface State {
+  songs: Song[],
+  songDataLoaded: boolean,
+  playlist: number[]
+}
+
+class App extends React.Component<RouteComponentProps, State> {
+
+  constructor(props:RouteComponentProps) {
     super(props);
     this.state = {
       songs: [],
@@ -49,7 +68,7 @@ class App extends React.Component {
       .then(response => response.json())
       .then(data => this.setState({
           songDataLoaded: true,
-          songs: data.map(song => {
+          songs: data.map((song:SongJson) => {
             return {
               id: song.ID,
               title: song.nimi,
@@ -69,7 +88,7 @@ class App extends React.Component {
         <Switch>
           <Route
             exact path='/'
-            render={props =>
+            render={() =>
               <SongSearchPage
                 showPlaylist={false}
                 songDataLoaded={this.state.songDataLoaded}

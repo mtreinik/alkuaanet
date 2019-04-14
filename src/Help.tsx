@@ -6,23 +6,34 @@ import Slide from '@material-ui/core/Slide';
 import Icon from '@material-ui/core/Icon';
 import Link from '@material-ui/core/Link';
 
-
-function Transition(props) {
+function Transition(props:Props) {
   return <Slide direction="down" {...props} />;
 }
 
-class Logo extends React.Component {
-  state = {
-    open: false,
-  };
+interface Props {
+}
+
+interface State {
+  open: boolean
+}
+
+class Logo extends React.Component<Props, State> {
+
+  constructor(props:Props) {
+    super(props);
+    this.state = {
+      open: false
+    };
+  }
+
   handleClickOpen = () => {
     this.setState({ open: true });
   };
   handleClose = () => {
     this.setState({ open: false });
   };
-  render () {
 
+  render () {
     return <div>
       <IconButton onClick={this.handleClickOpen}>
         <Icon>help</Icon>

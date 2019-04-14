@@ -1,17 +1,19 @@
 import React from 'react';
-import SongList from './SongList.js';
-import MyAppBar from './MyAppBar.js';
+import SongList from './SongList';
+import MyAppBar from './MyAppBar';
+import { Song } from './SongItem';
+import NoteAudioPlayer from './NoteAudioPlayer';
 
-function getPlaylistPath(playlist) {
+function getPlaylistPath(playlist:number[]) {
   const playlistPath = '/lista/' + playlist.join(',');
   return playlistPath;
 }
-function getPlaylistUrl(playlist) {
+function getPlaylistUrl(playlist:number[]) {
   const playlistUrl = window.location.origin + getPlaylistPath(playlist);
   return playlistUrl;
 }
 
-function getFilteredSongs(songs, filter) {
+function getFilteredSongs(songs:Song[], filter:string):Song[] {
   const lowerCaseFilter = filter.toLowerCase();
   const filteredSongs = songs.filter(song => {
     return song.title.toLowerCase().includes(lowerCaseFilter) ||
@@ -20,14 +22,13 @@ function getFilteredSongs(songs, filter) {
   return filteredSongs;
 }
 
-function getPlaylistSongs(songs, filter, playlist) {
+function getPlaylistSongs(songs:Song[], filter:string, playlist:number[]) {
   if (!playlist) {
     return [];
   }
   const filteredSongs = getFilteredSongs(songs, filter);
-  const playlistSongs = playlist.reduce((playlistSongs, songId) => {
+  const playlistSongs = playlist.reduce((playlistSongs: Song[], songId: number) => {
     const songToAdd = filteredSongs.find((song) => {
-
       return song.id === songId;
     });
     return songToAdd ? [...playlistSongs, songToAdd] : playlistSongs;
@@ -35,9 +36,24 @@ function getPlaylistSongs(songs, filter, playlist) {
   return playlistSongs;
 }
 
-class SongSearchPage extends React.Component {
+interface Props {
+  noteAudioPlayer: NoteAudioPlayer
+  showPlaylist: boolean,
+  songDataLoaded: boolean,
+  songs: Song[],
+  playlist: number[]
+}
 
-  constructor(props) {
+interface State {
+  playlist: number[],
+  playlistPath: string,
+  playlistUrl: string,
+  filter: string
+}
+
+class SongSearchPage extends React.Component<Props, State> {
+
+  constructor(props:Props) {
     super(props);
     this.state = {
       playlist: props.playlist,
@@ -47,13 +63,13 @@ class SongSearchPage extends React.Component {
     };
   }
 
-  handleFilterChange = (filter) => {
+  handleFilterChange = (filter:string) => {
     this.setState({
       filter: filter
     });
   }
 
-  handleAddToPlaylist = (songId) => {
+  handleAddToPlaylist = (songId:number) => {
     const newPlaylist = [...this.state.playlist, songId];
     this.setState({
       playlist: newPlaylist,
@@ -62,7 +78,8 @@ class SongSearchPage extends React.Component {
     });
   }
 
-  handleRemoveFromPlaylist = (songId) => {
+  handleRemoveFromPlaylist = (songId:number, index:number) => {
+    // TODO use index instead of songId
     const newPlaylist = this.state.playlist.filter((id) => {
       return id !== songId;
     });
