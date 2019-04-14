@@ -51,7 +51,7 @@ class MyAppBar extends React.Component {
               noteAudioPlayer={this.props.noteAudioPlayer}
               />
             { this.props.showPlaylist &&
-              <IconButton className={classes.arrow} component={Link} to='/'>
+              <IconButton component={Link} to='/'>
                 <Icon>arrow_back</Icon>
               </IconButton>
             }

@@ -4,7 +4,8 @@ import TextField from '@material-ui/core/TextField';
 
 const searchFieldStyle = {
   marginTop: '0.5em',
-  marginLeft: '1em'
+  marginLeft: '1em',
+  width: '8em'
 };
 
 class SearchField extends React.Component {
