@@ -21,6 +21,10 @@ const theme = createMuiTheme({
 
 const noteAudioPlayer = new NoteAudioPlayer();
 
+function convertBtoH(notes:string) {
+  return notes.replace(/B/g, 'H').replace(/Hb/g, 'B');
+}
+
 function getPlayListFromUrlParam(param:string) {
   if (!param) {
     return [];
@@ -69,7 +73,7 @@ class App extends React.Component<RouteComponentProps, State> {
             return {
               id: song.ID,
               title: song.nimi,
-              notes: song["opus-aanet"],
+              notes: convertBtoH(song["opus-aanet"]),
               lyrics: song.alkusanat,
               composer: song.sav,
               poet: song.san

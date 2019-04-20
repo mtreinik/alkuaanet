@@ -42,9 +42,9 @@ const AUDIO_FILES = [
   { note: "A2", audioFile: audioFileA2 },
   { note: "A3", audioFile: audioFileA3 },
   { note: "A4", audioFile: audioFileA4 },
-  { note: "B2", audioFile: audioFileB2 },
-  { note: "B3", audioFile: audioFileB3 },
-  { note: "B4", audioFile: audioFileB4 },
+  { note: "H2", audioFile: audioFileB2 },
+  { note: "H3", audioFile: audioFileB3 },
+  { note: "H4", audioFile: audioFileB4 },
   { note: "C#2", audioFile: audioFileCsharp2 },
   { note: "C#3", audioFile: audioFileCsharp3 },
   { note: "C#4", audioFile: audioFileCsharp4 },
@@ -90,7 +90,7 @@ function getRestOfNotes(notes) {
 
 function convertFlatsToSharps(originalNote) {
   const newNote = originalNote
-    .replace(/Bb/, 'A#')
+    .replace(/B/, 'A#')
     .replace(/Ab/, 'G#')
     .replace(/Gb/, 'F#')
     .replace(/Eb/, 'D#')
