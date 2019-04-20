@@ -61,7 +61,7 @@ class MyAppBar extends React.Component<Props, State> {
   render () {
     const { classes } = this.props;
     return <div>
-        <AppBar position="sticky">
+        <AppBar position="fixed">
           <Toolbar>
             <Logo
               noteAudioPlayer={this.props.noteAudioPlayer}
@@ -130,6 +130,7 @@ class MyAppBar extends React.Component<Props, State> {
           </Toolbar>
 
         </AppBar>
+        <Toolbar/>
       </div>;
   }
 }
