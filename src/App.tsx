@@ -7,7 +7,11 @@ import { RouteComponentProps } from "react-router-dom";
 
 import NoteAudioPlayer from './NoteAudioPlayer';
 import SongSearchPage from './SongSearchPage';
-import { Song } from './SongItem';
+import NewSongPage from './NewSongPage';
+import AboutPage from './AboutPage';
+import { Song } from './SongUtils';
+import SongUtils from './SongUtils';
+import NoteUtils from './NoteUtils';
 
 const theme = createMuiTheme({
   typography: {
@@ -21,21 +25,6 @@ const theme = createMuiTheme({
 
 const noteAudioPlayer = new NoteAudioPlayer();
 
-function convertBtoH(notes:string) {
-  return notes.replace(/B/g, 'H').replace(/Hb/g, 'B');
-}
-
-function getPlayListFromUrlParam(param:string) {
-  if (!param) {
-    return [];
-  }
-  const params = param.split(',');
-  const parsedInts = params.map(strParam => {
-    return parseInt(strParam);
-  });
-  return parsedInts;
-}
-
 interface SongJson {
   ID: number,
   nimi: string,
@@ -48,7 +37,6 @@ interface SongJson {
 interface State {
   songs: Song[],
   songDataLoaded: boolean,
-  playlist: number[]
 }
 
 class App extends React.Component<RouteComponentProps, State> {
@@ -58,7 +46,6 @@ class App extends React.Component<RouteComponentProps, State> {
     this.state = {
       songs: [],
       songDataLoaded: false,
-      playlist: []
     };
   }
 
@@ -73,7 +60,7 @@ class App extends React.Component<RouteComponentProps, State> {
             return {
               id: song.ID,
               title: song.nimi,
-              notes: convertBtoH(song["opus-aanet"]),
+              notes: NoteUtils.convertBtoH(song["opus-aanet"]),
               lyrics: song.alkusanat,
               composer: song.sav,
               poet: song.san
@@ -82,34 +69,55 @@ class App extends React.Component<RouteComponentProps, State> {
         }));
   }
 
+  getPlayListFromUrlParam = (param:string) => {
+    const newPlaylist = SongUtils.getPlayListFromUrlParam(param);
+    return newPlaylist;
+  }
+
   render() {
     return <div className="App">
       <MuiThemeProvider theme={theme}>
-      <Router>
-        <Switch>
-          <Route
-            exact path='/'
-            render={() =>
-              <SongSearchPage
-                songDataLoaded={this.state.songDataLoaded}
-                noteAudioPlayer={noteAudioPlayer}
-                songs={this.state.songs}
-                playlist={this.state.playlist}
-                showPlaylist={false}
-                />
-            }/>
-          <Route
-            path='/lista/:playlist?'
-            render={props =>
-              <SongSearchPage
-                songDataLoaded={this.state.songDataLoaded}
-                noteAudioPlayer={noteAudioPlayer}
-                songs={this.state.songs}
-                playlist={getPlayListFromUrlParam(props.match.params.playlist)}
-                showPlaylist={true}
-                />
-            }/>
-        </Switch>
+        <Router>
+          <Switch>
+            <Route
+              path='/lista/:playlist?'
+              render={props =>
+                <SongSearchPage
+                  songDataLoaded={this.state.songDataLoaded}
+                  noteAudioPlayer={noteAudioPlayer}
+                  songs={this.state.songs}
+                  playlist={this.getPlayListFromUrlParam(props.match.params.playlist)}
+                  showPlaylist={true}
+                  />
+              }/>
+            <Route
+              path='/uusi/:playlist?'
+              render={props =>
+                <NewSongPage
+                  noteAudioPlayer={noteAudioPlayer}
+                  playlist={this.getPlayListFromUrlParam(props.match.params.playlist)}
+                  />
+              }/>
+            <Route
+              path='/tietoja/:playlist?'
+              render={props =>
+                <AboutPage
+                  noteAudioPlayer={noteAudioPlayer}
+                  playlist={this.getPlayListFromUrlParam(props.match.params.playlist)}
+                  />
+              }/>
+            <Route
+              exact path='/:playlist?'
+              render={props =>
+                <SongSearchPage
+                  songDataLoaded={this.state.songDataLoaded}
+                  noteAudioPlayer={noteAudioPlayer}
+                  songs={this.state.songs}
+                  playlist={this.getPlayListFromUrlParam(props.match.params.playlist)}
+                  showPlaylist={false}
+                  />
+              }/>
+          </Switch>
         </Router>
       </MuiThemeProvider>
     </div>;

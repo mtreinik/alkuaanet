@@ -3,7 +3,7 @@ import List from '@material-ui/core/List';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import NoteAudioPlayer from './NoteAudioPlayer';
 import SongItem from './SongItem';
-import { Song } from './SongItem';
+import { Song } from './SongUtils';
 
 type Props = {
   loaded: boolean,

@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import NoteAudioPlayer from './NoteAudioPlayer.js';
 import { withStyles } from '@material-ui/core/styles';
 import { WithStyles, createStyles } from '@material-ui/core';
-
+import { Song } from './SongUtils';
 
 const styles = createStyles({
   add: {
@@ -27,15 +27,6 @@ const styles = createStyles({
     transition: "transform 0.5s"
   }
 });
-
-export interface Song {
-  id: number,
-  title: string,
-  composer: string,
-  poet: string,
-  lyrics: string,
-  notes: string
-}
 
 interface Props extends WithStyles<typeof styles> {
   index: number,
