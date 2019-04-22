@@ -8,11 +8,14 @@ import IconButton from '@material-ui/core/IconButton';
 import NoteAudioPlayer from './NoteAudioPlayer.js';
 import { withStyles } from '@material-ui/core/styles';
 import { WithStyles, createStyles } from '@material-ui/core';
-
+import { Song } from './SongUtils';
 
 const styles = createStyles({
   add: {
 //    marginRight: "0.5em"
+  },
+  notes: {
+    textAlign: "right"
   },
   playing: {
     marginLeft: "1em",
@@ -27,15 +30,6 @@ const styles = createStyles({
     transition: "transform 0.5s"
   }
 });
-
-export interface Song {
-  id: number,
-  title: string,
-  composer: string,
-  poet: string,
-  lyrics: string,
-  notes: string
-}
 
 interface Props extends WithStyles<typeof styles> {
   index: number,
@@ -95,7 +89,7 @@ class SongItem extends React.Component<Props, State> {
       <ListItemText
         primary={song.title}
         secondary={secondary}/>
-      {song.notes}
+      <div className={classes.notes}>{song.notes}</div>
       <ListItemIcon
         className={ this.state.playing ? classes.playing : classes.stopped }>
         <Icon>music_note</Icon>

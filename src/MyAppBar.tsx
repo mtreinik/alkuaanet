@@ -14,8 +14,9 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import { Link }  from 'react-router-dom';
 
 import Logo from './Logo';
-import Help from './Help';
+import MyMenu from './MyMenu';
 import NoteAudioPlayer from './NoteAudioPlayer.js';
+import SongUtils from './SongUtils';
 
 const styles = createStyles({
   link: {
@@ -26,8 +27,6 @@ const styles = createStyles({
 interface Props extends WithStyles<typeof styles> {
   showPlaylist: boolean,
   noteAudioPlayer: NoteAudioPlayer,
-  playlistPath: string,
-  playlistUrl: string,
   playlist: number[],
   filter: string,
   handleFilterChange: (filter:string) => void
@@ -59,6 +58,8 @@ class MyAppBar extends React.Component<Props, State> {
   }
 
   render () {
+    const playlistPath = '/lista/' + this.props.playlist.join(',');
+    const playlistUrl = SongUtils.getPlaylistUrl(this.props.playlist);
     const { classes } = this.props;
     return <div>
         <AppBar position="fixed">
@@ -68,8 +69,9 @@ class MyAppBar extends React.Component<Props, State> {
               />
             { this.props.showPlaylist &&
               <IconButton
-                  component={({innerRef,...props}) => <Link {...props}
-                  to="/" />}>
+                  component={
+                    ({innerRef,...props}) => <Link {...props} to="/" />
+                  }>
                 <Icon>arrow_back</Icon>
               </IconButton>
             }
@@ -77,8 +79,11 @@ class MyAppBar extends React.Component<Props, State> {
               { this.props.showPlaylist ||
                 <div>
                   <IconButton
-                      component={({innerRef,...props}) => <Link {...props}
-                      to={ this.props.showPlaylist ? '/' : this.props.playlistPath }/>}>
+                      component={
+                        ({innerRef,...props}) =>
+                          <Link {...props}
+                            to={ this.props.showPlaylist ? '/' : playlistPath }/>
+                      }>
                     <Badge color="secondary" badgeContent={this.props.playlist.length}>
                       <Icon>playlist_play</Icon>
                     </Badge>
@@ -91,11 +96,13 @@ class MyAppBar extends React.Component<Props, State> {
               { this.props.showPlaylist &&
                 <div>
                   <CopyToClipboard
-                      text={this.props.playlistUrl}
+                      text={playlistUrl}
                       onCopy={this.openSnackbar}>
                     <Button
-                        component={({innerRef,...props}) => <Link {...props}
-                        to={this.props.playlistPath} />}>
+                        component={
+                          ({innerRef,...props}) =>
+                            <Link {...props} to={playlistPath} />
+                        }>
                       <Icon className={classes.link}>link</Icon>
                       {this.props.playlist.length} {this.props.playlist.length === 1 ? 'laulu' : 'laulua'}
                     </Button>
@@ -126,7 +133,9 @@ class MyAppBar extends React.Component<Props, State> {
               }
             </div>
             <div style={{flexGrow: 1}} />
-            <Help />
+            <MyMenu
+              playlist={this.props.playlist}
+              />
           </Toolbar>
 
         </AppBar>
