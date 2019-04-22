@@ -1,12 +1,12 @@
-//
+// Song utils
 
 export interface Song {
   id: number,
   title: string,
-  composer: string,
-  poet: string,
   lyrics: string,
   notes: string
+  composer?: string,
+  poet?: string,
 }
 
 class SongUtils {
