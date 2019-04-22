@@ -182,4 +182,5 @@ class NoteAudioPlayer {
     // }
   }
 }
+
 export default NoteAudioPlayer;

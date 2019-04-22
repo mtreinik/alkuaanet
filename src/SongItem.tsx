@@ -1,19 +1,17 @@
 import React from 'react';
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import NoteAudioPlayer from './NoteAudioPlayer.js';
 import { withStyles } from '@material-ui/core/styles';
 import { WithStyles, createStyles } from '@material-ui/core';
+
+import NoteAudioPlayer from './NoteAudioPlayer.js';
 import { Song } from './SongUtils';
 
 const styles = createStyles({
-  add: {
-//    marginRight: "0.5em"
-  },
   notes: {
     textAlign: "right"
   },
@@ -35,8 +33,8 @@ interface Props extends WithStyles<typeof styles> {
   index: number,
   song: Song,
   noteAudioPlayer: NoteAudioPlayer,
-  handleAddToPlaylist: ((songId:number) => void) | null,
-  handleRemoveFromPlaylist: ((songId:number, index:number) => void) | null
+  handleAddToPlaylist?: ((songId:number) => void),
+  handleRemoveFromPlaylist?: ((songId:number, index:number) => void)
 }
 
 interface State {
@@ -97,14 +95,14 @@ class SongItem extends React.Component<Props, State> {
       { this.props.handleAddToPlaylist &&
         <ListItemSecondaryAction>
           <IconButton onClick={this.addToPlaylist}>
-            <Icon className={classes.add}>playlist_add</Icon>
+            <Icon>playlist_add</Icon>
           </IconButton>
         </ListItemSecondaryAction>
       }
       { this.props.handleRemoveFromPlaylist &&
         <ListItemSecondaryAction>
           <IconButton onClick={this.removeFromPlaylist}>
-            <Icon className={classes.add}>delete</Icon>
+            <Icon>delete</Icon>
           </IconButton>
         </ListItemSecondaryAction>
       }

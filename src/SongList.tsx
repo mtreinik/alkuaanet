@@ -1,6 +1,7 @@
 import React from 'react';
 import List from '@material-ui/core/List';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
 import NoteAudioPlayer from './NoteAudioPlayer';
 import SongItem from './SongItem';
 import { Song } from './SongUtils';
@@ -9,8 +10,8 @@ type Props = {
   loaded: boolean,
   songs: Song[],
   noteAudioPlayer: NoteAudioPlayer,
-  handleAddToPlaylist: ((songId:number) => void) | null,
-  handleRemoveFromPlaylist: ((songId:number, index:number) => void) | null
+  handleAddToPlaylist?: ((songId:number) => void),
+  handleRemoveFromPlaylist?: ((songId:number, index:number) => void)
 }
 
 const SongList = (props:Props) =>

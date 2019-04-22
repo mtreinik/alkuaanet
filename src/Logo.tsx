@@ -1,9 +1,10 @@
 import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
-import logo from './img/aanirauta-32.png';
-import NoteAudioPlayer from './NoteAudioPlayer.js';
 import { withStyles } from '@material-ui/core/styles';
 import { WithStyles, createStyles } from '@material-ui/core';
+
+import NoteAudioPlayer from './NoteAudioPlayer.js';
+import logo from './img/aanirauta-32.png';
 
 const styles = createStyles({
   playing: {
@@ -64,7 +65,6 @@ class Logo extends React.Component<Props, State> {
           className={ this.state.playing ? classes.playing : classes.stopped }
           />
       </IconButton>
-
     </div>
   }
 }

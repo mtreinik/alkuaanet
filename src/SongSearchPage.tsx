@@ -1,8 +1,9 @@
 import React from 'react';
+
+import NoteAudioPlayer from './NoteAudioPlayer';
 import SongList from './SongList';
 import MyAppBar from './MyAppBar';
 import { Song } from './SongUtils';
-import NoteAudioPlayer from './NoteAudioPlayer';
 import SongUtils from './SongUtils';
 
 interface Props {
@@ -65,8 +66,8 @@ class SongSearchPage extends React.Component<Props, State> {
         songs={ this.props.showPlaylist ?
           SongUtils.getPlaylistSongs(this.props.songs, '', this.state.playlist) :
           SongUtils.getFilteredSongs(this.props.songs, this.state.filter) }
-        handleAddToPlaylist={ this.props.showPlaylist ? null : this.handleAddToPlaylist }
-        handleRemoveFromPlaylist={ this.props.showPlaylist ? this.handleRemoveFromPlaylist : null }
+        handleAddToPlaylist={ this.props.showPlaylist ? undefined : this.handleAddToPlaylist }
+        handleRemoveFromPlaylist={ this.props.showPlaylist ? this.handleRemoveFromPlaylist : undefined }
         noteAudioPlayer={this.props.noteAudioPlayer} />
     </div>
   }

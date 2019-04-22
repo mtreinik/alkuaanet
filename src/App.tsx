@@ -69,11 +69,6 @@ class App extends React.Component<RouteComponentProps, State> {
         }));
   }
 
-  getPlayListFromUrlParam = (param:string) => {
-    const newPlaylist = SongUtils.getPlayListFromUrlParam(param);
-    return newPlaylist;
-  }
-
   render() {
     return <div className="App">
       <MuiThemeProvider theme={theme}>
@@ -86,7 +81,7 @@ class App extends React.Component<RouteComponentProps, State> {
                   songDataLoaded={this.state.songDataLoaded}
                   noteAudioPlayer={noteAudioPlayer}
                   songs={this.state.songs}
-                  playlist={this.getPlayListFromUrlParam(props.match.params.playlist)}
+                  playlist={SongUtils.getPlayListFromUrlParam(props.match.params.playlist)}
                   showPlaylist={true}
                   />
               }/>
@@ -95,7 +90,7 @@ class App extends React.Component<RouteComponentProps, State> {
               render={props =>
                 <NewSongPage
                   noteAudioPlayer={noteAudioPlayer}
-                  playlist={this.getPlayListFromUrlParam(props.match.params.playlist)}
+                  playlist={SongUtils.getPlayListFromUrlParam(props.match.params.playlist)}
                   />
               }/>
             <Route
@@ -103,7 +98,7 @@ class App extends React.Component<RouteComponentProps, State> {
               render={props =>
                 <AboutPage
                   noteAudioPlayer={noteAudioPlayer}
-                  playlist={this.getPlayListFromUrlParam(props.match.params.playlist)}
+                  playlist={SongUtils.getPlayListFromUrlParam(props.match.params.playlist)}
                   />
               }/>
             <Route
@@ -113,7 +108,7 @@ class App extends React.Component<RouteComponentProps, State> {
                   songDataLoaded={this.state.songDataLoaded}
                   noteAudioPlayer={noteAudioPlayer}
                   songs={this.state.songs}
-                  playlist={this.getPlayListFromUrlParam(props.match.params.playlist)}
+                  playlist={SongUtils.getPlayListFromUrlParam(props.match.params.playlist)}
                   showPlaylist={false}
                   />
               }/>

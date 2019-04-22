@@ -37,10 +37,16 @@ function getEmptyState():State {
 }
 
 class NewSongPage extends React.Component<Props, State> {
+
   constructor(props:Props) {
     super(props);
     this.state = getEmptyState();
   }
+
+  clearForm = () => {
+    this.setState(getEmptyState());
+  }
+
   sendSong = () => {
     if (this.isInvalidForm()) {
       this.setState({
@@ -89,10 +95,6 @@ class NewSongPage extends React.Component<Props, State> {
 
   isInvalidRequiredField = (name: keyof State) => {
     return this.state[name] === '';
-  }
-
-  clearForm = () => {
-    this.setState(getEmptyState());
   }
 
   render() {

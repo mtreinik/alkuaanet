@@ -23,7 +23,7 @@ const songs:Song[] = [
 ];
 
 it('returns playlist songs', () => {
-  expect(SongUtils.getPlaylistSongs(songs, 'Foo', [1, 2])).toEqual([
+  expect(SongUtils.getPlaylistSongs(songs, 'foo', [1, 2])).toEqual([
     {
       id: 1,
       title: 'Foo',
@@ -34,7 +34,7 @@ it('returns playlist songs', () => {
 });
 
 it('returns filtered songs', () => {
-  expect(SongUtils.getFilteredSongs(songs, 'Foo')).toEqual([
+  expect(SongUtils.getFilteredSongs(songs, 'foo')).toEqual([
     {
       id: 1,
       title: 'Foo',
