@@ -51,9 +51,7 @@ class NewSongPage extends React.Component<Props, State> {
         result: 'Odota, tietoja lähetetään...'
       });
       console.log('sending song suggestion');
-  //    const host = window.location.origin;
-  // TODO use window.location.origin
-      const host = 'https://alkuaa.net';
+      const host = process.env.NODE_ENV === 'production' ? window.location.origin : 'https://alkuaa.net';
       const formData = new FormData();
       formData.append('title', this.state.title);
       formData.append('lyrics', this.state.lyrics);

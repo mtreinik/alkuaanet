@@ -14,6 +14,9 @@ const styles = createStyles({
   add: {
 //    marginRight: "0.5em"
   },
+  notes: {
+    textAlign: "right"
+  },
   playing: {
     marginLeft: "1em",
     marginRight: "1.5em",
@@ -86,7 +89,7 @@ class SongItem extends React.Component<Props, State> {
       <ListItemText
         primary={song.title}
         secondary={secondary}/>
-      {song.notes}
+      <div className={classes.notes}>{song.notes}</div>
       <ListItemIcon
         className={ this.state.playing ? classes.playing : classes.stopped }>
         <Icon>music_note</Icon>

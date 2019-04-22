@@ -18,7 +18,6 @@ interface Props {
 
 const MySimpleAppBar = (props:Props) =>
   <div>
-    {  console.log('simple appbar playlist:',props.playlist) }
     <AppBar position="fixed">
       <Toolbar>
         <Logo

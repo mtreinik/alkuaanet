@@ -1,7 +1,8 @@
 import React from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import ListItem from '@material-ui/core/ListItem';
+import Badge from '@material-ui/core/Badge';
+import Divider from '@material-ui/core/Divider';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
@@ -34,6 +35,7 @@ class Logo extends React.Component<Props, State> {
   };
 
   render () {
+    const playlistPath = '/lista/' + this.props.playlist.join(',');
     const newSongPagePath = '/uusi/' + this.props.playlist.join(',');
     const aboutPagePath = '/tietoja/' + this.props.playlist.join(',');
     return <div>
@@ -47,6 +49,29 @@ class Logo extends React.Component<Props, State> {
         anchorEl={this.state.anchorEl}
         open={Boolean(this.state.anchorEl)}
         onClose={this.handleClose}>
+        <MenuItem
+          onClick={this.handleClose}
+          component={
+            ({innerRef,...props}) => <Link {...props} to="/" />
+          }>
+          <ListItemIcon>
+            <Icon>search</Icon>
+          </ListItemIcon>
+          <ListItemText>Hae lauluja</ListItemText>
+        </MenuItem>
+        <MenuItem
+          onClick={this.handleClose}
+          component={
+            ({innerRef,...props}) => <Link {...props} to={playlistPath} />
+          }>
+          <ListItemIcon>
+            <Badge color="secondary" badgeContent={this.props.playlist.length}>
+              <Icon>playlist_play</Icon>
+            </Badge>
+          </ListItemIcon>
+          <ListItemText>Näytä soittolista</ListItemText>
+        </MenuItem>
+        <Divider />
         <MenuItem
           onClick={this.handleClose}
           component={
