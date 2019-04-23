@@ -31,6 +31,7 @@ interface SongJson {
   "opus-aanet": string,
   alkusanat: string,
   sav: string,
+  sov: string,
   san: string
 }
 
@@ -63,6 +64,7 @@ class App extends React.Component<RouteComponentProps, State> {
               notes: NoteUtils.convertBtoH(song["opus-aanet"]),
               lyrics: song.alkusanat,
               composer: song.sav,
+              arranger: song.sov,
               poet: song.san
             };
           })

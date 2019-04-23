@@ -17,6 +17,7 @@ interface Props {
 interface State {
   title: string,
   composer: string,
+  arranger: string,
   poet: string,
   lyrics: string,
   notes: string,
@@ -28,6 +29,7 @@ function getEmptyState():State {
   return {
     title: '',
     composer: '',
+    arranger: '',
     poet: '',
     lyrics: '',
     notes: '',
@@ -63,6 +65,7 @@ class NewSongPage extends React.Component<Props, State> {
       formData.append('lyrics', this.state.lyrics);
       formData.append('notes', NoteUtils.convertHtoB(this.state.notes));
       formData.append('composer', this.state.composer);
+      formData.append('arranger', this.state.arranger);
       formData.append('poet', this.state.poet);
       fetch(host + '/addsong.fcgi', {
           method: 'POST',
@@ -151,6 +154,14 @@ class NewSongPage extends React.Component<Props, State> {
                 margin="normal"
                 value={this.state.composer}
                 onChange={this.handleChange('composer')}
+                />
+              <TextField
+                label="Sovittaja"
+                placeholder="Sovittaja, esim. Esko Kallio"
+                fullWidth
+                margin="normal"
+                value={this.state.arranger}
+                onChange={this.handleChange('arranger')}
                 />
               <TextField
                 label="Sanoittaja"

@@ -80,6 +80,7 @@ class SongItem extends React.Component<Props, State> {
     const song = this.props.song;
     const secondary = song.lyrics +
       (song.composer ? ` – säv. ${song.composer}` : '') +
+      (song.arranger ? `, sov. ${song.arranger}` : '') +
       (song.poet ? `, san. ${song.poet}` : '');
     return <ListItem
         button

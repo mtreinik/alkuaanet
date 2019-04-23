@@ -18,12 +18,13 @@ def test_app(environ, start_response):
         lyrics = post['lyrics'].value
         notes = post['notes'].value
         composer = post['composer'].value
+        arranger = post['arranger'].value
         poet = post['poet'].value
 
         filename = title.replace(' ', '_') + '.opus'
         timestamp = str(datetime.datetime.utcnow())
 
-        sheet.append_row(['', title, lyrics, '', '', notes, '', filename, '', composer, '', poet, '', timestamp])
+        sheet.append_row(['', title, lyrics, '', '', notes, '', filename, '', composer, arranger, poet, '', timestamp])
 
         yield '{"title": "%s", "notes": "%s", "filename": "%s" }' % ( title, notes, filename )
 
