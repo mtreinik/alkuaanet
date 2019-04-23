@@ -6,6 +6,7 @@ export interface Song {
   lyrics: string,
   notes: string
   composer?: string,
+  arranger?: string,
   poet?: string,
 }
 
@@ -29,6 +30,10 @@ class SongUtils {
     const lowerCaseFilter = filter.toLowerCase();
     const filteredSongs = songs.filter(song => {
       return song.title.toLowerCase().includes(lowerCaseFilter) ||
+        (song.composer && song.composer.toLowerCase().includes(lowerCaseFilter)) ||
+        (song.arranger && song.arranger.toLowerCase().includes(lowerCaseFilter)) ||
+        (song.poet && song.poet.toLowerCase().includes(lowerCaseFilter)) ||
+        song.notes.toLowerCase().includes(lowerCaseFilter) ||
         song.lyrics.toLowerCase().includes(lowerCaseFilter);
     });
     return filteredSongs;
