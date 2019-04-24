@@ -12,7 +12,7 @@ export interface Song {
 
 class SongUtils {
 
-  static getPlaylistSongs(songs:Song[], filter:string, playlist:number[]) {
+  static getPlaylistSongs(songs:Song[], filter:string, playlist:number[]):Song[] {
     if (!playlist) {
       return [];
     }
@@ -39,7 +39,7 @@ class SongUtils {
     return filteredSongs;
   }
 
-  static getPlayListFromUrlParam(param:string) {
+  static getPlayListFromUrlParam(param:string):number[] {
     if (!param) {
       return [];
     }
@@ -50,11 +50,11 @@ class SongUtils {
     return parsedInts;
   }
 
-  static getPlaylistPath(playlist:number[]) {
+  static getPlaylistPath(playlist:number[]):string {
     const playlistPath = playlist.join(',');
     return playlistPath;
   }
-  static getPlaylistUrl(playlist:number[]) {
+  static getPlaylistUrl(playlist:number[]):string {
     const playlistUrl = window.location.origin + '/lista/' + SongUtils.getPlaylistPath(playlist);
     return playlistUrl;
   }
