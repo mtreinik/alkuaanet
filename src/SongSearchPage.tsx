@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import NoteAudioPlayer from './NoteAudioPlayer';
 import SongList from './SongList';
@@ -14,63 +14,46 @@ interface Props {
   playlist: number[]
 }
 
-interface State {
-  playlist: number[],
-  filter: string
-}
+const SongSearchPage = (props:Props) => {
 
-class SongSearchPage extends React.Component<Props, State> {
+  const [playlist, setPlaylist] = useState(props.playlist);
+  const [filter, setFilter] = useState('');
 
-  constructor(props:Props) {
-    super(props);
-    this.state = {
-      filter: '',
-      playlist: props.playlist
-    };
+  const handleFilterChange = (newFilter:string) => {
+    setFilter(newFilter);
   }
 
-  handleFilterChange = (filter:string) => {
-    this.setState({
-      filter: filter
-    });
+  const handleAddToPlaylist = (songId:number) => {
+    const newPlaylist = [...playlist, songId];
+    setPlaylist(newPlaylist);
   }
 
-  handleAddToPlaylist = (songId:number) => {
-    const newPlaylist = [...this.state.playlist, songId];
-    this.setState({
-      playlist: newPlaylist
-    });
-  }
-
-  handleRemoveFromPlaylist = (songId:number, index:number) => {
+  const handleRemoveFromPlaylist = (songId:number, index:number) => {
     // TODO use index instead of songId
-    const newPlaylist = this.state.playlist.filter((id) => {
+    const newPlaylist = playlist.filter((id) => {
       return id !== songId;
     });
-    this.setState({
-      playlist: newPlaylist
-    });
+    setPlaylist(newPlaylist);
   }
 
-  render () {
-    return <div>
-      <MyAppBar
-        noteAudioPlayer={this.props.noteAudioPlayer}
-        showPlaylist={this.props.showPlaylist}
-        filter={this.state.filter}
-        playlist={this.state.playlist}
-        handleFilterChange={this.handleFilterChange}
-        />
-      <SongList
-        loaded={this.props.songDataLoaded}
-        songs={ this.props.showPlaylist ?
-          SongUtils.getPlaylistSongs(this.props.songs, '', this.state.playlist) :
-          SongUtils.getFilteredSongs(this.props.songs, this.state.filter) }
-        handleAddToPlaylist={ this.props.showPlaylist ? undefined : this.handleAddToPlaylist }
-        handleRemoveFromPlaylist={ this.props.showPlaylist ? this.handleRemoveFromPlaylist : undefined }
-        noteAudioPlayer={this.props.noteAudioPlayer} />
-    </div>
-  }
+  return <div>
+    <MyAppBar
+      noteAudioPlayer={props.noteAudioPlayer}
+      showPlaylist={props.showPlaylist}
+      filter={filter}
+      playlist={playlist}
+      handleFilterChange={handleFilterChange}
+      />
+    <SongList
+      loaded={props.songDataLoaded}
+      songs={ props.showPlaylist ?
+        SongUtils.getPlaylistSongs(props.songs, '', playlist) :
+        SongUtils.getFilteredSongs(props.songs, filter) }
+      handleAddToPlaylist={ props.showPlaylist ? undefined : handleAddToPlaylist }
+      handleRemoveFromPlaylist={ props.showPlaylist ? handleRemoveFromPlaylist : undefined }
+      noteAudioPlayer={props.noteAudioPlayer} />
+  </div>
+
 }
 
 export default SongSearchPage;

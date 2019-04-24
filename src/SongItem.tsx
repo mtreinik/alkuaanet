@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
@@ -37,78 +37,59 @@ interface Props extends WithStyles<typeof styles> {
   handleRemoveFromPlaylist?: ((songId:number, index:number) => void)
 }
 
-interface State {
-  playing: boolean
-}
+const SongItem = (props:Props) => {
 
-class SongItem extends React.Component<Props, State> {
+  const [playing, setPlaying] = useState(false);
 
-  constructor(props:Props) {
-    super(props);
-    this.state = {
-      playing: false
-    };
+  const playNotes = (notes:string) => () => {
+    props.noteAudioPlayer.playNotes(
+      notes, () => setPlaying(true), () => setPlaying(false));
   }
 
-  playNotes = (notes:string) => () => {
-    this.props.noteAudioPlayer.playNotes(
-      notes, this.startPlayback, this.endPlayback);
-  }
-  startPlayback = () => {
-    this.setState({
-      playing: true
-    });
-  }
-  endPlayback = () => {
-    this.setState({
-      playing: false
-    });
-  }
-  addToPlaylist = () => {
-    if (this.props.handleAddToPlaylist) {
-      this.props.handleAddToPlaylist(this.props.song.id);
+  const addToPlaylist = () => {
+    if (props.handleAddToPlaylist) {
+      props.handleAddToPlaylist(props.song.id);
     }
   }
-  removeFromPlaylist = () => {
-    if (this.props.handleRemoveFromPlaylist) {
-      this.props.handleRemoveFromPlaylist(this.props.song.id, this.props.index);
+  const removeFromPlaylist = () => {
+    if (props.handleRemoveFromPlaylist) {
+      props.handleRemoveFromPlaylist(props.song.id, props.index);
     }
   }
 
-  render () {
-    const { classes } = this.props;
-    const song = this.props.song;
-    const secondary = song.lyrics +
-      (song.composer ? ` – säv. ${song.composer}` : '') +
-      (song.arranger ? `, sov. ${song.arranger}` : '') +
-      (song.poet ? `, san. ${song.poet}` : '');
-    return <ListItem
-        button
-        onClick={this.playNotes(song.notes)}>
-      <ListItemText
-        primary={song.title}
-        secondary={secondary}/>
-      <div className={classes.notes}>{song.notes}</div>
-      <ListItemIcon
-        className={ this.state.playing ? classes.playing : classes.stopped }>
-        <Icon>music_note</Icon>
-      </ListItemIcon>
-      { this.props.handleAddToPlaylist &&
-        <ListItemSecondaryAction>
-          <IconButton onClick={this.addToPlaylist}>
-            <Icon>playlist_add</Icon>
-          </IconButton>
-        </ListItemSecondaryAction>
-      }
-      { this.props.handleRemoveFromPlaylist &&
-        <ListItemSecondaryAction>
-          <IconButton onClick={this.removeFromPlaylist}>
-            <Icon>delete</Icon>
-          </IconButton>
-        </ListItemSecondaryAction>
-      }
-    </ListItem>;
-  }
+  const { classes } = props;
+  const song = props.song;
+  const secondaryText = song.lyrics +
+    (song.composer ? ` – säv. ${song.composer}` : '') +
+    (song.arranger ? `, sov. ${song.arranger}` : '') +
+    (song.poet ? `, san. ${song.poet}` : '');
+  return <ListItem
+      button
+      onClick={playNotes(song.notes)}>
+    <ListItemText
+      primary={song.title}
+      secondary={secondaryText}/>
+    <div className={classes.notes}>{song.notes}</div>
+    <ListItemIcon
+      className={ playing ? classes.playing : classes.stopped }>
+      <Icon>music_note</Icon>
+    </ListItemIcon>
+    { props.handleAddToPlaylist &&
+      <ListItemSecondaryAction>
+        <IconButton onClick={addToPlaylist}>
+          <Icon>playlist_add</Icon>
+        </IconButton>
+      </ListItemSecondaryAction>
+    }
+    { props.handleRemoveFromPlaylist &&
+      <ListItemSecondaryAction>
+        <IconButton onClick={removeFromPlaylist}>
+          <Icon>delete</Icon>
+        </IconButton>
+      </ListItemSecondaryAction>
+    }
+  </ListItem>;
+
 }
 
 export default withStyles(styles)(SongItem);

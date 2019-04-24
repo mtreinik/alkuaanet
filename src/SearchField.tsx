@@ -17,29 +17,28 @@ interface Props extends WithStyles<typeof styles> {
   value: string
 }
 
-class SearchField extends React.Component<Props> {
+const SearchField = (props:Props) => {
 
-  handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
-    this.props.handleFilterChange(event.target.value);
+  const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+    props.handleFilterChange(event.target.value);
   }
 
-  render() {
-    const { classes } = this.props;
-    return <TextField
-    id="search"
-    type="search"
-    placeholder="Hae lauluja"
-    className={classes.textfield}
-    onChange={this.handleChange}
-    value={this.props.value}
-    InputProps={{
-      disableUnderline: true,
-      startAdornment: (
-        <Icon>search</Icon>
-      ),
-    }}
-    />;
-  }
+  const { classes } = props;
+  return <TextField
+  id="search"
+  type="search"
+  placeholder="Hae lauluja"
+  className={classes.textfield}
+  onChange={handleChange}
+  value={props.value}
+  InputProps={{
+    disableUnderline: true,
+    startAdornment: (
+      <Icon>search</Icon>
+    ),
+  }}
+  />;
+
 }
 
 export default withStyles(styles)(SearchField);
