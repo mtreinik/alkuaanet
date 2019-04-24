@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -35,90 +35,79 @@ interface SongJson {
   san: string
 }
 
-interface State {
-  songs: Song[],
-  songDataLoaded: boolean,
-}
+const App = (routeComponentProps:RouteComponentProps) => {
+  const [songs, setSongs] = useState<Song[]>([]);
+  const [songDataLoaded, setSongDataLoaded] = useState(false);
 
-class App extends React.Component<RouteComponentProps, State> {
+  useEffect(() => {
+    if (!songDataLoaded) {
+      const jsonUrl = window.location.origin + '/songdata.json';
+      console.log('fetching from', jsonUrl);
+      fetch(jsonUrl)
+        .then(response => response.json())
+        .then(data => {
+            setSongDataLoaded(true);
+            setSongs(data.map((song:SongJson) => {
+              return {
+                id: song.ID,
+                title: song.nimi,
+                notes: NoteUtils.convertBtoH(song["opus-aanet"]),
+                lyrics: song.alkusanat,
+                composer: song.sav,
+                arranger: song.sov,
+                poet: song.san
+              };
+            }));
+          });
+    }
+  });
 
-  constructor(props:RouteComponentProps) {
-    super(props);
-    this.state = {
-      songs: [],
-      songDataLoaded: false,
-    };
-  }
-
-  componentDidMount() {
-    const jsonUrl = window.location.origin + '/songdata.json';
-    console.log('fetching from', jsonUrl);
-    fetch(jsonUrl)
-      .then(response => response.json())
-      .then(data => this.setState({
-          songDataLoaded: true,
-          songs: data.map((song:SongJson) => {
-            return {
-              id: song.ID,
-              title: song.nimi,
-              notes: NoteUtils.convertBtoH(song["opus-aanet"]),
-              lyrics: song.alkusanat,
-              composer: song.sav,
-              arranger: song.sov,
-              poet: song.san
-            };
-          })
-        }));
-  }
-
-  render() {
-    return <div className="App">
-      <MuiThemeProvider theme={theme}>
-        <Router>
-          <Switch>
-            <Route
-              path='/lista/:playlist?'
-              render={props =>
-                <SongSearchPage
-                  songDataLoaded={this.state.songDataLoaded}
-                  noteAudioPlayer={noteAudioPlayer}
-                  songs={this.state.songs}
-                  playlist={SongUtils.getPlayListFromUrlParam(props.match.params.playlist)}
-                  showPlaylist={true}
-                  />
-              }/>
-            <Route
-              path='/uusi/:playlist?'
-              render={props =>
-                <NewSongPage
-                  noteAudioPlayer={noteAudioPlayer}
-                  playlist={SongUtils.getPlayListFromUrlParam(props.match.params.playlist)}
-                  />
-              }/>
-            <Route
-              path='/tietoja/:playlist?'
-              render={props =>
-                <AboutPage
-                  noteAudioPlayer={noteAudioPlayer}
-                  playlist={SongUtils.getPlayListFromUrlParam(props.match.params.playlist)}
-                  />
-              }/>
-            <Route
-              exact path='/:playlist?'
-              render={props =>
-                <SongSearchPage
-                  songDataLoaded={this.state.songDataLoaded}
-                  noteAudioPlayer={noteAudioPlayer}
-                  songs={this.state.songs}
-                  playlist={SongUtils.getPlayListFromUrlParam(props.match.params.playlist)}
-                  showPlaylist={false}
-                  />
-              }/>
-          </Switch>
-        </Router>
-      </MuiThemeProvider>
-    </div>;
-  }
+  return <div className="App">
+    <MuiThemeProvider theme={theme}>
+      <Router>
+        <Switch>
+          <Route
+            path='/lista/:playlist?'
+            render={props =>
+              <SongSearchPage
+                songDataLoaded={songDataLoaded}
+                noteAudioPlayer={noteAudioPlayer}
+                songs={songs}
+                playlist={SongUtils.getPlayListFromUrlParam(props.match.params.playlist)}
+                showPlaylist={true}
+                />
+            }/>
+          <Route
+            path='/uusi/:playlist?'
+            render={props =>
+              <NewSongPage
+                noteAudioPlayer={noteAudioPlayer}
+                playlist={SongUtils.getPlayListFromUrlParam(props.match.params.playlist)}
+                />
+            }/>
+          <Route
+            path='/tietoja/:playlist?'
+            render={props =>
+              <AboutPage
+                noteAudioPlayer={noteAudioPlayer}
+                playlist={SongUtils.getPlayListFromUrlParam(props.match.params.playlist)}
+                />
+            }/>
+          <Route
+            exact path='/:playlist?'
+            render={props =>
+              <SongSearchPage
+                songDataLoaded={songDataLoaded}
+                noteAudioPlayer={noteAudioPlayer}
+                songs={songs}
+                playlist={SongUtils.getPlayListFromUrlParam(props.match.params.playlist)}
+                showPlaylist={false}
+                />
+            }/>
+        </Switch>
+      </Router>
+    </MuiThemeProvider>
+  </div>;
 }
 
 export default App;

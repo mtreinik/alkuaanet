@@ -15,7 +15,6 @@ interface Props {
 }
 
 const Logo = (props:Props) => {
-//  const initialAnchorEl:HTMLElement | null = null;
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const playlistPath = '/lista/' + props.playlist.join(',');
