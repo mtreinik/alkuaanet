@@ -27,7 +27,7 @@ const Logo = (props:Props) => {
 
   const [playing, setPlaying] = useState(false);
 
-  const playNote = () => {
+  const playNote = ():void => {
     props.noteAudioPlayer.playNotes(
       'A4', () => setPlaying(true), () => setPlaying(false));
   }

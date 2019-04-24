@@ -45,11 +45,11 @@ class NewSongPage extends React.Component<Props, State> {
     this.state = getEmptyState();
   }
 
-  clearForm = () => {
+  clearForm = ():void => {
     this.setState(getEmptyState());
   }
 
-  sendSong = () => {
+  sendSong = ():void => {
     if (this.isInvalidForm()) {
       this.setState({
         error: 'Ole hyvä ja täytä kaikki pakolliset tiedot.'
@@ -85,18 +85,18 @@ class NewSongPage extends React.Component<Props, State> {
       }
   };
 
-  handleChange = (name: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleChange = (name: keyof State) => (event: React.ChangeEvent<HTMLInputElement>):void => {
     this.setState({ [name]: event.target.value } as Pick<State, keyof State>);
   };
 
-  isInvalidForm = () => {
+  isInvalidForm = ():boolean => {
     const requiredFields:(keyof State)[] = ['title', 'lyrics', 'notes'];
     return requiredFields.some((name: keyof State) => {
       return this.isInvalidRequiredField(name);
     });
   }
 
-  isInvalidRequiredField = (name: keyof State) => {
+  isInvalidRequiredField = (name: keyof State):boolean => {
     return this.state[name] === '';
   }
 

@@ -19,16 +19,16 @@ const SongSearchPage = (props:Props) => {
   const [playlist, setPlaylist] = useState(props.playlist);
   const [filter, setFilter] = useState('');
 
-  const handleFilterChange = (newFilter:string) => {
+  const handleFilterChange = (newFilter:string):void => {
     setFilter(newFilter);
   }
 
-  const handleAddToPlaylist = (songId:number) => {
+  const handleAddToPlaylist = (songId:number):void => {
     const newPlaylist = [...playlist, songId];
     setPlaylist(newPlaylist);
   }
 
-  const handleRemoveFromPlaylist = (songId:number, index:number) => {
+  const handleRemoveFromPlaylist = (songId:number, index:number):void => {
     // TODO use index instead of songId
     const newPlaylist = playlist.filter((id) => {
       return id !== songId;

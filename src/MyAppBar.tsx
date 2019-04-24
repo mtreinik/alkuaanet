@@ -34,9 +34,12 @@ interface Props extends WithStyles<typeof styles> {
 
 const MyAppBar = (props:Props) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+
   const playlistPath = '/lista/' + props.playlist.join(',');
   const playlistUrl = SongUtils.getPlaylistUrl(props.playlist);
+
   const { classes } = props;
+
   return <div>
     <AppBar position="fixed">
       <Toolbar>

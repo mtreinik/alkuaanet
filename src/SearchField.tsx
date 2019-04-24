@@ -19,7 +19,7 @@ interface Props extends WithStyles<typeof styles> {
 
 const SearchField = (props:Props) => {
 
-  const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event:React.ChangeEvent<HTMLInputElement>):void => {
     props.handleFilterChange(event.target.value);
   }
 
