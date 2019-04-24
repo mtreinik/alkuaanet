@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
 import { WithStyles, createStyles } from '@material-ui/core';
@@ -23,50 +23,25 @@ interface Props extends WithStyles<typeof styles> {
   noteAudioPlayer: NoteAudioPlayer
 }
 
-interface State {
-  open: boolean,
-  playing: boolean
-}
+const Logo = (props:Props) => {
 
-class Logo extends React.Component<Props, State> {
+  const [playing, setPlaying] = useState(false);
 
-  constructor(props:Props) {
-    super(props);
-    this.state = {
-      open: false,
-      playing: false
-    };
+  const playNote = () => {
+    props.noteAudioPlayer.playNotes(
+      'A4', () => setPlaying(true), () => setPlaying(false));
   }
 
-  playNote = () => {
-    this.props.noteAudioPlayer.playNotes(
-      'A4', this.startPlayback, this.endPlayback);
-  }
-
-  startPlayback = () => {
-    this.setState({
-      playing: true
-    })
-  }
-
-  endPlayback = () => {
-    this.setState({
-      playing: false
-    })
-  }
-
-  render () {
-    const { classes } = this.props;
-    return <div>
-      <IconButton onClick={this.playNote}>
-        <img
-          src={logo}
-          alt="Äänirauta"
-          className={ this.state.playing ? classes.playing : classes.stopped }
-          />
-      </IconButton>
-    </div>
-  }
+  const { classes } = props;
+  return <div>
+    <IconButton onClick={playNote}>
+      <img
+        src={logo}
+        alt="Äänirauta"
+        className={ playing ? classes.playing : classes.stopped }
+        />
+    </IconButton>
+  </div>
 }
 
 export default withStyles(styles)(Logo);

@@ -15,12 +15,13 @@ interface Props {
 }
 
 const Logo = (props:Props) => {
-//  const initialAnchorEl:HTMLElement | null = null;
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
-  const playlistPath = '/lista/' + props.playlist.join(',');
-  const newSongPagePath = '/uusi/' + props.playlist.join(',');
-  const aboutPagePath = '/tietoja/' + props.playlist.join(',');
+  const playlistParam = props.playlist.join(',');
+  const songSearchPagePath = '/' + playlistParam;
+  const playlistPath = '/lista/' + playlistParam;
+  const newSongPagePath = '/uusi/' + playlistParam;
+  const aboutPagePath = '/tietoja/' + playlistParam;
 
   return <div>
     <IconButton
@@ -38,7 +39,7 @@ const Logo = (props:Props) => {
       <MenuItem
         onClick={() => setAnchorEl(null)}
         component={
-          ({innerRef,...innerProps}) => <Link {...innerProps} to="/" />
+          ({innerRef,...innerProps}) => <Link {...innerProps} to={songSearchPagePath} />
         }>
         <ListItemIcon>
           <Icon>search</Icon>

@@ -10,27 +10,25 @@ interface Props {
   playlist: number[]
 }
 
-class AboutPage extends React.Component<Props> {
-  render() {
-    return <div>
-      <MySimpleAppBar
-        noteAudioPlayer={this.props.noteAudioPlayer}
-        playlist={this.props.playlist}
-        title="Tietoja sovelluksesta"
-        />
-      <Paper style={{margin: "1em", padding: "1em"}}>
-        <h1>alkuaa.net</h1>
-        <p>Alkuäänet mieskuorokappaleisiin.</p>
-        <p>Tekijä: Mikko Reinikainen</p>
-        <p>
-          <Link color="inherit"
-            href="https://github.com/mtreinik/alkuaanet/">
-            github.com/mtreinik/alkuaanet
-          </Link>
-        </p>
-      </Paper>
-    </div>
-  }
+const AboutPage = (props:Props) => {
+  return <div>
+    <MySimpleAppBar
+      noteAudioPlayer={props.noteAudioPlayer}
+      playlist={props.playlist}
+      title="Tietoja sovelluksesta"
+      />
+    <Paper style={{margin: "1em", padding: "1em"}}>
+      <h1>alkuaa.net</h1>
+      <p>Alkuäänet mieskuorokappaleisiin.</p>
+      <p>Tekijä: Mikko Reinikainen</p>
+      <p>
+        <Link color="inherit"
+          href="https://github.com/mtreinik/alkuaanet/">
+          github.com/mtreinik/alkuaanet
+        </Link>
+      </p>
+    </Paper>
+  </div>
 }
 
 export default AboutPage;
