@@ -101,10 +101,6 @@ class NewSongPage extends React.Component<Props, State> {
   }
 
   render() {
-    const notesHelperText = "Koneluettava versio alkuäänistä. " +
-      "Muoto on C4-Ab3-Eb3-Ab2, missä C4=pianon keski-C (tenoriavaimen ensimmäinen ala-apuviiva). " +
-      "Ylennykset merkitään esim. F#3, alennukset esim. Ab4. " +
-      "Suoraan C4:n alapuolella on H3 ja sen alla B3.";
     return <div>
       <MySimpleAppBar
         noteAudioPlayer={this.props.noteAudioPlayer}
@@ -139,7 +135,12 @@ class NewSongPage extends React.Component<Props, State> {
               <TextField
                 label="Alkuäänet"
                 placeholder="Alkuäänet, esim. C4-Ab3-Eb3-Ab2"
-                helperText={notesHelperText}
+                helperText={
+                  `Koneluettava versio alkuäänistä.
+                   Muoto on C4-Ab3-Eb3-Ab2, missä C4=pianon keski-C (tenoriavaimen ensimmäinen ala-apuviiva).
+                   Ylennykset merkitään esim. F#3, alennukset esim. Ab4.
+                   Suoraan C4:n alapuolella on H3 ja sen alla B3.`
+                }
                 required
                 error={this.state.error !== '' && this.isInvalidRequiredField('notes')}
                 fullWidth
