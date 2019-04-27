@@ -22,23 +22,22 @@ const SearchField = (props:Props) => {
   const handleChange = (event:React.ChangeEvent<HTMLInputElement>):void => {
     props.handleFilterChange(event.target.value);
   }
-
   const { classes } = props;
-  return <TextField
-  id="search"
-  type="search"
-  placeholder="Hae lauluja"
-  className={classes.textfield}
-  onChange={handleChange}
-  value={props.value}
-  InputProps={{
-    disableUnderline: true,
-    startAdornment: (
-      <Icon>search</Icon>
-    ),
-  }}
-  />;
 
+  return <TextField
+    id="search"
+    type="search"
+    placeholder="Hae lauluja"
+    className={classes.textfield}
+    onChange={handleChange}
+    value={props.value}
+    InputProps={{
+      disableUnderline: true,
+      startAdornment: (
+        <Icon>search</Icon>
+      ),
+    }}
+    />;
 }
 
 export default withStyles(styles)(SearchField);
