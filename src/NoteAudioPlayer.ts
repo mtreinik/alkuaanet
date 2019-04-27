@@ -44,10 +44,6 @@ function playLoadedAudios(audios:HTMLAudioElement[]) {
 }
 
 class NoteAudioPlayer {
-//  audios;
-//  constructor () {
-//    this.audios = [];
-//  }
 
   playNotes(notes:string, handleStartPlayback:() => void, handleEndPlayback:() => void):void {
     const loadedAudiosPromise:Promise<HTMLAudioElement[]> =
@@ -78,34 +74,27 @@ class NoteAudioPlayer {
 
   loadAudio(originalNote:string):Promise<HTMLAudioElement> {
     const note = convertFlatsToSharps(originalNote);
-    // const audio = this.audios[note];
-    // if (!audio) {
-      const mappedAudioFile = AUDIO_FILES.find(function (candidate) {
-        return candidate.note === note;
-      });
-      if (!mappedAudioFile) {
-        console.warn('could not find audio file for note ' + note);
-        return Promise.reject(note);
+    const mappedAudioFile = AUDIO_FILES.find(function (candidate) {
+      return candidate.note === note;
+    });
+    if (!mappedAudioFile) {
+      console.warn('could not find audio file for note ' + note);
+      return Promise.reject(note);
+    }
+    const audioFile = mappedAudioFile.audioFile;
+    const audio = new Audio(audioFile);
+    audio.load();
+    const promise = new Promise<HTMLAudioElement>((resolve) => {
+
+      const canPlayThrough = () => {
+        audio.removeEventListener('canplaythrough', canPlayThrough);
+        resolve(audio);
       }
-      const audioFile = mappedAudioFile.audioFile;
-      const audio = new Audio(audioFile);
-      // disabled recycling of audio media elements
-      //this.audios[note] = audio;
-      audio.load();
-      const promise = new Promise<HTMLAudioElement>((resolve) => {
 
-        const canPlayThrough = () => {
-          audio.removeEventListener('canplaythrough', canPlayThrough);
-          resolve(audio);
-        }
+      audio.addEventListener('canplaythrough', canPlayThrough);
 
-        audio.addEventListener('canplaythrough', canPlayThrough);
-
-      });
-      return promise;
-    // } else {
-    //   return Promise.resolve(audio);
-    // }
+    });
+    return promise;
   }
 }
 
