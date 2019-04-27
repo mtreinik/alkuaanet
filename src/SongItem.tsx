@@ -8,7 +8,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import { withStyles } from '@material-ui/core/styles';
 import { WithStyles, createStyles } from '@material-ui/core';
 
-import NoteAudioPlayer from './NoteAudioPlayer.js';
+import NoteAudioPlayer from './NoteAudioPlayer';
 import { Song } from './SongUtils';
 
 const styles = createStyles({

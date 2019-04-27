@@ -15,7 +15,7 @@ import { Link }  from 'react-router-dom';
 
 import Logo from './Logo';
 import MyMenu from './MyMenu';
-import NoteAudioPlayer from './NoteAudioPlayer.js';
+import NoteAudioPlayer from './NoteAudioPlayer';
 import SongUtils from './SongUtils';
 
 const styles = createStyles({

@@ -3,7 +3,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
 import { WithStyles, createStyles } from '@material-ui/core';
 
-import NoteAudioPlayer from './NoteAudioPlayer.js';
+import NoteAudioPlayer from './NoteAudioPlayer';
 import logo from './img/aanirauta-32.png';
 
 const styles = createStyles({

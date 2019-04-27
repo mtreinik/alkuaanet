@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 
 import MySimpleAppBar from './MySimpleAppBar';
-import NoteAudioPlayer from './NoteAudioPlayer.js';
+import NoteAudioPlayer from './NoteAudioPlayer';
 import NoteUtils from './NoteUtils';
 
 enum FormState {
