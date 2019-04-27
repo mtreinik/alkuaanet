@@ -41,12 +41,12 @@ const SongItem = (props:Props) => {
 
   const [playing, setPlaying] = useState(false);
 
-  const playNotes = (notes:string) => () => {
+  const playNotes = (notes:string) => ():void => {
     props.noteAudioPlayer.playNotes(
       notes, () => setPlaying(true), () => setPlaying(false));
   }
 
-  const addToPlaylist = () => {
+  const addToPlaylist = ():void => {
     if (props.handleAddToPlaylist) {
       props.handleAddToPlaylist(props.song.id);
     }
