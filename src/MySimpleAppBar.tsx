@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 
 import { Link }  from 'react-router-dom';
 
-import NoteAudioPlayer from './NoteAudioPlayer.js';
+import NoteAudioPlayer from './NoteAudioPlayer';
 import Logo from './Logo';
 import MyMenu from './MyMenu';
 
