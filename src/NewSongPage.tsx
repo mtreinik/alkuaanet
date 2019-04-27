@@ -9,20 +9,31 @@ import MySimpleAppBar from './MySimpleAppBar';
 import NoteAudioPlayer from './NoteAudioPlayer.js';
 import NoteUtils from './NoteUtils';
 
+enum FormState {
+  WaitingForInput,
+  Sending,
+  Sent,
+  Error
+}
+
 interface Props {
   noteAudioPlayer: NoteAudioPlayer,
   playlist: number[]
 }
 
-interface State {
+interface FormContentState {
   title: string,
   composer: string,
   arranger: string,
   poet: string,
   lyrics: string,
   notes: string,
-  result: string,
-  error: string
+}
+
+interface State extends FormContentState {
+  formState: FormState,
+  message: string,
+  errorMessage: string
 }
 
 function getEmptyState():State {
@@ -33,8 +44,9 @@ function getEmptyState():State {
     poet: '',
     lyrics: '',
     notes: '',
-    result: '',
-    error: '',
+    formState: FormState.WaitingForInput,
+    message: '',
+    errorMessage: '',
   }
 }
 
@@ -52,51 +64,58 @@ class NewSongPage extends React.Component<Props, State> {
   sendSong = ():void => {
     if (this.isInvalidForm()) {
       this.setState({
-        error: 'Ole hyvä ja täytä kaikki pakolliset tiedot.'
+        formState: FormState.Error,
+        errorMessage: 'Ole hyvä ja täytä kaikki pakolliset tiedot.'
       })
     } else {
       this.setState({
-        result: 'Odota, tietoja lähetetään...'
+        formState: FormState.Sending,
+        message: 'Odota, tietoja lähetetään...'
+      }, () => {
+        console.log('sending song suggestion');
+        const host = process.env.NODE_ENV === 'production' ? window.location.origin : 'https://alkuaa.net';
+        const formData = new FormData();
+        formData.append('title', this.state.title);
+        formData.append('lyrics', this.state.lyrics);
+        formData.append('notes', NoteUtils.convertHtoB(this.state.notes));
+        formData.append('composer', this.state.composer);
+        formData.append('arranger', this.state.arranger);
+        formData.append('poet', this.state.poet);
+        fetch(host + '/addsong.fcgi', {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log('song suggestion sent, data=',data);
+            this.setState({
+              formState: FormState.Sent,
+              message: 'Ehdotus lähetetty. Kiitos!'
+            });
+          })
+          .catch(error => {
+            console.error(error);
+            this.setState({
+              formState: FormState.Error,
+              errorMessage: 'Virhe lähetyksessä: ' + JSON.stringify(error)
+            });
+          })
       });
-      console.log('sending song suggestion');
-      const host = process.env.NODE_ENV === 'production' ? window.location.origin : 'https://alkuaa.net';
-      const formData = new FormData();
-      formData.append('title', this.state.title);
-      formData.append('lyrics', this.state.lyrics);
-      formData.append('notes', NoteUtils.convertHtoB(this.state.notes));
-      formData.append('composer', this.state.composer);
-      formData.append('arranger', this.state.arranger);
-      formData.append('poet', this.state.poet);
-      fetch(host + '/addsong.fcgi', {
-          method: 'POST',
-          body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log('song suggestion sent, data=',data);
-          this.setState({ result: 'Ehdotus lähetetty. Kiitos!' });
-        })
-        .catch(error => {
-          console.error(error);
-          this.setState({
-            error: 'Virhe lähetyksessä: ' + JSON.stringify(error)
-          });
-        })
-      }
+    }
   };
 
-  handleChange = (name: keyof State) => (event: React.ChangeEvent<HTMLInputElement>):void => {
-    this.setState({ [name]: event.target.value } as Pick<State, keyof State>);
+  handleChange = (name: keyof FormContentState) => (event: React.ChangeEvent<HTMLInputElement>):void => {
+    this.setState({ [name]: event.target.value } as Pick<State, keyof FormContentState>);
   };
 
   isInvalidForm = ():boolean => {
-    const requiredFields:(keyof State)[] = ['title', 'lyrics', 'notes'];
-    return requiredFields.some((name: keyof State) => {
+    const requiredFields:(keyof FormContentState)[] = ['title', 'lyrics', 'notes'];
+    return requiredFields.some((name: keyof FormContentState) => {
       return this.isInvalidRequiredField(name);
     });
   }
 
-  isInvalidRequiredField = (name: keyof State):boolean => {
+  isInvalidRequiredField = (name: keyof FormContentState):boolean => {
     return this.state[name] === '';
   }
 
@@ -110,13 +129,14 @@ class NewSongPage extends React.Component<Props, State> {
       <Paper style={{margin: "1em", padding: "1em"}}>
         <div>
           <h1>Lisää uusi laulu</h1>
-          { this.state.result !== '' ||
+          { this.state.formState !== FormState.Sending &&
+            this.state.formState !== FormState.Sent &&
             <form>
               <TextField
                 label="Laulun nimi"
                 placeholder="esim. Metsänhartaus"
                 required
-                error={this.state.error !== '' && this.isInvalidRequiredField('title')}
+                error={this.state.formState === FormState.Error && this.isInvalidRequiredField('title')}
                 fullWidth
                 margin="normal"
                 value={this.state.title}
@@ -126,7 +146,7 @@ class NewSongPage extends React.Component<Props, State> {
                 label="Alkusanat"
                 placeholder="Alkusanat, esim. Mä metsän vihreen helmassa"
                 required
-                error={this.state.error !== '' && this.isInvalidRequiredField('lyrics')}
+                error={this.state.formState === FormState.Error && this.isInvalidRequiredField('lyrics')}
                 fullWidth
                 margin="normal"
                 value={this.state.lyrics}
@@ -142,7 +162,7 @@ class NewSongPage extends React.Component<Props, State> {
                    Suoraan C4:n alapuolella on H3 ja sen alla B3.`
                 }
                 required
-                error={this.state.error !== '' && this.isInvalidRequiredField('notes')}
+                error={this.state.formState === FormState.Error && this.isInvalidRequiredField('notes')}
                 fullWidth
                 margin="normal"
                 value={this.state.notes}
@@ -176,9 +196,9 @@ class NewSongPage extends React.Component<Props, State> {
                 Voit ehdottaa uuden laulun lisäämistä alkuäänilistalle.
                 Kaikki ehdotukset tarkistetaan manuaalisesti ennen kuin ne lisätään näkyville.
               </p>
-              { this.state.error &&
+              { this.state.formState === FormState.Error &&
                 <div style={{color: "red"}}>
-                  {this.state.error}
+                  {this.state.errorMessage}
                 </div>
               }
               <Fab
@@ -189,15 +209,14 @@ class NewSongPage extends React.Component<Props, State> {
               </Fab>
             </form>
           }
-          { this.state.result !== '' &&
+          { this.state.message !== '' &&
             <div>
               <p style={{color: "green"}}>
-                {this.state.result}
+                {this.state.message}
               </p>
               <Button
                 variant="outlined"
-                // disable button while sending (I know this is not very pretty):
-                disabled={this.state.result.match(/Odota/) !== null}
+                disabled={ this.state.formState === FormState.Sending }
                 onClick={this.clearForm}>
                 Ehdota uutta laulua
               </Button>
