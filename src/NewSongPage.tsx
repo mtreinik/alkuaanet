@@ -9,7 +9,7 @@ import MySimpleAppBar from './MySimpleAppBar';
 import NoteAudioPlayer from './NoteAudioPlayer';
 import NoteUtils from './NoteUtils';
 
-enum FormState {
+enum FormStatus {
   WaitingForInput,
   Sending,
   Sent,
@@ -31,7 +31,7 @@ interface FormContentState {
 }
 
 interface State extends FormContentState {
-  formState: FormState,
+  formStatus: FormStatus,
   message: string,
   errorMessage: string
 }
@@ -44,7 +44,7 @@ function getEmptyState():State {
     poet: '',
     lyrics: '',
     notes: '',
-    formState: FormState.WaitingForInput,
+    formStatus: FormStatus.WaitingForInput,
     message: '',
     errorMessage: '',
   }
@@ -64,12 +64,12 @@ class NewSongPage extends React.Component<Props, State> {
   sendSong = ():void => {
     if (this.isInvalidForm()) {
       this.setState({
-        formState: FormState.Error,
+        formStatus: FormStatus.Error,
         errorMessage: 'Ole hyvä ja täytä kaikki pakolliset tiedot.'
       })
     } else {
       this.setState({
-        formState: FormState.Sending,
+        formStatus: FormStatus.Sending,
         message: 'Odota, tietoja lähetetään...'
       }, () => {
         console.log('sending song suggestion');
@@ -89,14 +89,14 @@ class NewSongPage extends React.Component<Props, State> {
           .then(data => {
             console.log('song suggestion sent, data=',data);
             this.setState({
-              formState: FormState.Sent,
+              formStatus: FormStatus.Sent,
               message: 'Ehdotus lähetetty. Kiitos!'
             });
           })
           .catch(error => {
             console.error(error);
             this.setState({
-              formState: FormState.Error,
+              formStatus: FormStatus.Error,
               errorMessage: 'Virhe lähetyksessä: ' + JSON.stringify(error)
             });
           })
@@ -129,14 +129,14 @@ class NewSongPage extends React.Component<Props, State> {
       <Paper style={{margin: "1em", padding: "1em"}}>
         <div>
           <h1>Lisää uusi laulu</h1>
-          { this.state.formState !== FormState.Sending &&
-            this.state.formState !== FormState.Sent &&
+          { this.state.formStatus !== FormStatus.Sending &&
+            this.state.formStatus !== FormStatus.Sent &&
             <form>
               <TextField
                 label="Laulun nimi"
                 placeholder="esim. Metsänhartaus"
                 required
-                error={this.state.formState === FormState.Error && this.isInvalidRequiredField('title')}
+                error={this.state.formStatus === FormStatus.Error && this.isInvalidRequiredField('title')}
                 fullWidth
                 margin="normal"
                 value={this.state.title}
@@ -146,7 +146,7 @@ class NewSongPage extends React.Component<Props, State> {
                 label="Alkusanat"
                 placeholder="Alkusanat, esim. Mä metsän vihreen helmassa"
                 required
-                error={this.state.formState === FormState.Error && this.isInvalidRequiredField('lyrics')}
+                error={this.state.formStatus === FormStatus.Error && this.isInvalidRequiredField('lyrics')}
                 fullWidth
                 margin="normal"
                 value={this.state.lyrics}
@@ -162,7 +162,7 @@ class NewSongPage extends React.Component<Props, State> {
                    Suoraan C4:n alapuolella on H3 ja sen alla B3.`
                 }
                 required
-                error={this.state.formState === FormState.Error && this.isInvalidRequiredField('notes')}
+                error={this.state.formStatus === FormStatus.Error && this.isInvalidRequiredField('notes')}
                 fullWidth
                 margin="normal"
                 value={this.state.notes}
@@ -196,7 +196,7 @@ class NewSongPage extends React.Component<Props, State> {
                 Voit ehdottaa uuden laulun lisäämistä alkuäänilistalle.
                 Kaikki ehdotukset tarkistetaan manuaalisesti ennen kuin ne lisätään näkyville.
               </p>
-              { this.state.formState === FormState.Error &&
+              { this.state.formStatus === FormStatus.Error &&
                 <div style={{color: "red"}}>
                   {this.state.errorMessage}
                 </div>
@@ -216,7 +216,7 @@ class NewSongPage extends React.Component<Props, State> {
               </p>
               <Button
                 variant="outlined"
-                disabled={ this.state.formState === FormState.Sending }
+                disabled={ this.state.formStatus === FormStatus.Sending }
                 onClick={this.clearForm}>
                 Ehdota uutta laulua
               </Button>
