@@ -59,7 +59,7 @@ class NewSongPage extends React.Component<Props, State> {
 
   clearForm = ():void => {
     this.setState(getEmptyState());
-  }
+  };
 
   sendSong = ():void => {
     if (this.isInvalidForm()) {
@@ -113,11 +113,11 @@ class NewSongPage extends React.Component<Props, State> {
     return requiredFields.some((name: keyof FormContentState) => {
       return this.isInvalidRequiredField(name);
     });
-  }
+  };
 
   isInvalidRequiredField = (name: keyof FormContentState):boolean => {
     return this.state[name] === '';
-  }
+  };
 
   render() {
     return <div>
