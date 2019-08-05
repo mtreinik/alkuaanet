@@ -5,7 +5,7 @@ Alkuaanet gives initial notes of acapella songs.
 
 ## Building and deploying
 
-Build the application with `npm run build`.
+Build the application with `npm install` and `npm run build`.
 
 Copy contents of `build` folder to the root of web server.
 
